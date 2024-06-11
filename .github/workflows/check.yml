@@ -1,0 +1,35 @@
+name: status checks
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '**'
+      - '!main'
+
+jobs:
+  codeql-analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: invoke workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: codeql-analysis.yml
+
+  infer:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: invoke workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: infer.yml
+
+  regression:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: invoke workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: regression.yml
