@@ -478,26 +478,14 @@ No exception only if it meets all of
 ### extract
 
 ```cpp
-node_type extract(const_iterator position);
-
-node_type extract(key_type const& key);
+Container extract() &&;
 ```
 
-Extract an element and returns it.
-Unlike `std::multimap::extract`, move element.
-
-**Pre requirements**
-
-`position` should be valid dereferenceable iterator in first form.
+Extracts the internal container of `*this`.
 
 **Return value**
 
-Extracted node handle.
-
-**Complexity**
-
-`O(M)` in first form.
-`O(M)` for extraction, `O(log(N))` for searching target element in second form.
+The internal container of `*this`.
 
 ### merge
 

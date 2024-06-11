@@ -398,25 +398,8 @@ public:
         swap(_container, other._container);
     }
 
-    node_type extract(const_iterator position)
-    {
-        // standard requires `valid dereferenceable constant iterator`
-        assert(position != cend());
-
-        node_type node{std::move(*_mutable(position))};
-        _container.erase(position);
-        return node;
-    }
-
-    node_type extract(key_type const& key)
-    {
-        if (auto [itr, found] = _find(key); found)
-        {
-            node_type node{std::move(*itr)};
-            erase(itr);
-            return node;
-        }
-        return {};
+    Container extract() && {
+        return std::move(_container);
     }
 
     // FIXME: Stateful comparator is always treated as non equivalent comparator.

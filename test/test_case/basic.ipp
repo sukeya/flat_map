@@ -1023,66 +1023,8 @@ TEST_CASE("erase", "[erase]")
     }
 }
 
-TEST_CASE("node", "[insertion][erase]")
+TEST_CASE("node", "[insertion]")
 {
-    SECTION("extract by iterator")
-    {
-        FLAT_CONTAINER<int, int> fm =
-        {
-            MAKE_PAIR(0, 1),
-            MAKE_PAIR(2, 3),
-            MAKE_PAIR(2, 1),
-            MAKE_PAIR(4, 5),
-            MAKE_PAIR(6, 7),
-        };
-
-        auto const size = fm.size();
-        auto node = fm.extract(std::next(fm.cbegin()));
-        REQUIRE(fm.size() == (size - 1));
-        REQUIRE(node.value.has_value());
-        REQUIRE(*node.value == MAKE_PAIR(2, 3));
-
-        auto itr = fm.begin();
-        REQUIRE(*itr++ == MAKE_PAIR(0, 1));
-#if MULTI_CONTAINER
-        REQUIRE(*itr++ == MAKE_PAIR(2, 1));
-#endif
-        REQUIRE(*itr++ == MAKE_PAIR(4, 5));
-        REQUIRE(*itr++ == MAKE_PAIR(6, 7));
-        REQUIRE(itr == fm.end());
-    }
-
-    SECTION("extract by key")
-    {
-        FLAT_CONTAINER<int, int> fm =
-        {
-            MAKE_PAIR(0, 1),
-            MAKE_PAIR(2, 3),
-            MAKE_PAIR(2, 1),
-            MAKE_PAIR(4, 5),
-            MAKE_PAIR(6, 7),
-        };
-
-        auto const size = fm.size();
-        auto node = fm.extract(5);
-        REQUIRE(fm.size() == size);
-        REQUIRE_FALSE(node.value.has_value());
-
-        node = fm.extract(2);
-        REQUIRE(fm.size() == (size - 1));
-        REQUIRE(node.value.has_value());
-        REQUIRE(*node.value == MAKE_PAIR(2, 3));
-
-        auto itr = fm.begin();
-        REQUIRE(*itr++ == MAKE_PAIR(0, 1));
-#if MULTI_CONTAINER
-        REQUIRE(*itr++ == MAKE_PAIR(2, 1));
-#endif
-        REQUIRE(*itr++ == MAKE_PAIR(4, 5));
-        REQUIRE(*itr++ == MAKE_PAIR(6, 7));
-        REQUIRE(itr == fm.end());
-    }
-
     using node_type = FLAT_CONTAINER<int, int>::node_type;
 
     SECTION("insert")
@@ -1457,6 +1399,21 @@ TEST_CASE("swap", "[swap]")
         REQUIRE(fm.empty());
         REQUIRE(dst.size() == 4);
     }
+}
+
+TEST_CASE("extract", "[extract]")
+{
+    CONTAINER<PAIR<int, int>> c = 
+    {
+        MAKE_PAIR(0, 1),
+        MAKE_PAIR(2, 3),
+        MAKE_PAIR(4, 5),
+        MAKE_PAIR(6, 7),
+    };
+    
+    FLAT_CONTAINER<int, int> fm{flat_map::range_order::sorted, c};
+
+    REQUIRE(c == std::move(fm).extract());
 }
 
 TEST_CASE("erase_if", "[erase_if]")
