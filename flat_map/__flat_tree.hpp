@@ -402,6 +402,10 @@ public:
         return std::move(_container);
     }
 
+    void replace(Container&& cont) {
+        _container = std::move(cont);
+    }
+
     // FIXME: Stateful comparator is always treated as non equivalent comparator.
     template <typename Cont>
     static constexpr bool _same_order_v = std::is_empty_v<key_compare> && std::is_same_v<typename Cont::key_compare, key_compare>;

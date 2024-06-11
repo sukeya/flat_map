@@ -1416,6 +1416,23 @@ TEST_CASE("extract", "[extract]")
     REQUIRE(c == std::move(fm).extract());
 }
 
+TEST_CASE("replace", "[replace]")
+{
+    CONTAINER<PAIR<int, int>> c = 
+    {
+        MAKE_PAIR(0, 1),
+        MAKE_PAIR(2, 3),
+        MAKE_PAIR(4, 5),
+        MAKE_PAIR(6, 7),
+    };
+    
+    FLAT_CONTAINER<int, int> fm;
+
+    fm.replace(decltype(c){c});
+
+    REQUIRE(c == std::move(fm).extract());
+}
+
 TEST_CASE("erase_if", "[erase_if]")
 {
     FLAT_CONTAINER<int, int> fm =

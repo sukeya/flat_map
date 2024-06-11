@@ -288,6 +288,7 @@ public:
     void swap(flat_map& other) noexcept(noexcept(this->_super::swap(other))) { _super::swap(other); }
 
     using _super::extract;
+    using _super::replace;
 
     template <typename Comp, typename Allocator>
     void merge(std::map<key_type, mapped_type, Comp, Allocator>& source) { this->_merge(source, std::false_type{}); }

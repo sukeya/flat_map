@@ -559,6 +559,21 @@ Extracts the internal container of `*this`.
 
 The internal container of `*this`.
 
+### replace
+
+```cpp
+void replace(Container&& cont);
+```
+
+Replace the internal container of `*this` with `cont`.
+
+**Pre requirements**
+The following conditions must be met:
+- The keys of `cont` are sorted with respect to `Compare`, and
+- The keys of `cont` don't contain equal elements.
+
+Otherwise, the behavior is undefined.
+
 ### merge
 
 ```cpp

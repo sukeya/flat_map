@@ -164,6 +164,7 @@ public:
     void swap(flat_multiset& other) noexcept(noexcept(this->_super::swap(other))) { _super::swap(other); }
 
     using _super::extract;
+    using _super::replace;
 
     template <typename Comp, typename Allocator>
     void merge(std::set<key_type, Comp, Allocator>& source) { this->_merge(source, std::false_type{}); }
