@@ -114,29 +114,6 @@ explicit flat_multiset(range_order order, Container&& cont, allocator_type const
 For non sorted range, amortized `O(E log(E))` if enough additional memory is available, otherwise amortized `O(E log^2(E))`.
 For sorted range `O(1)`.
 
-```cpp
-Container& base() &;
-```
-
-Refer underlying container.
-The behavior is unspecified with any base container modifications except updating value (not key).
-
-```cpp
-Container const& base() const&;
-```
-
-Refer underlying container.
-
-```cpp
-Container base() &&;
-```
-
-Move every containing elements to returned sequence.
-
-**Postcondition**
-
-- `size() == 0`
-
 ## Assignments
 
 ```cpp
