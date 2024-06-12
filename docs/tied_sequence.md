@@ -475,6 +475,28 @@ No exception only if for all sequences meet all of
 - `std::allocator_traits<typename Sequence::allocator_type>::propagate_on_container_swap::value == true`
 - `std::allocator_traits<typename Sequence::allocator_type>::is_always_equal::value == true`
 
+### extract
+
+```cpp
+constexpr std::tuple<Sequences...> extract() &&;
+```
+
+Extract the internal container of `*this`.
+
+**Return value**
+The internal container of `*this`.
+
+### replace
+
+```cpp
+constexpr void replace(std::tuple<Sequences...>&& seq);
+```
+
+Replace the internal container of `*this` with `seq`.
+
+**Exceptions**
+No exception only if all sequences have the same length.
+
 ## Non member functions
 
 ### operator==

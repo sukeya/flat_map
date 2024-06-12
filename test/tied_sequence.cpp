@@ -964,6 +964,53 @@ TEST_CASE("swap", "[swap]")
     }
 }
 
+TEST_CASE("extract", "[extract]")
+{
+    flat_map::tied_sequence<std::vector<int>, std::vector<int>> src =
+    {
+        {0, 1},
+        {2, 3},
+        {4, 5},
+        {6, 7},
+    };
+
+    auto [k, v] = std::move(src).extract();
+    REQUIRE(k == std::vector<int>{0, 2, 4, 6});
+    REQUIRE(v == std::vector<int>{1, 3, 5, 7});
+}
+
+TEST_CASE("replace", "[replace]")
+{
+    SECTION("valid")
+    {
+        auto k = std::vector<int>{0, 2, 4, 6};
+        auto v = std::vector<int>{1, 3, 5, 7};
+
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> src;
+        src.replace(std::make_tuple(std::move(k), std::move(v)));
+
+        {
+            auto [k, v] = std::move(src).extract();
+            REQUIRE(k == std::vector<int>{0, 2, 4, 6});
+            REQUIRE(v == std::vector<int>{1, 3, 5, 7});
+        }
+    }
+
+    SECTION("invalid")
+    {
+        auto k = std::vector<int>{0, 2, 4, 6, 8};
+        auto v = std::vector<int>{1, 3, 5, 7};
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> src;
+
+        REQUIRE_THROWS(src.replace(std::make_tuple(std::move(k), std::move(v))));
+
+        k = std::vector<int>{0, 2, 4, 6};
+        v = std::vector<int>{1, 3, 5, 7, 8};
+
+        REQUIRE_THROWS(src.replace(std::make_tuple(std::move(k), std::move(v))));
+    }
+}
+
 TEST_CASE("comparator", "[comparator]")
 {
     SECTION("traditional comparator")

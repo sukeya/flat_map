@@ -615,6 +615,18 @@ public:
     {
         detail::tuple_transform([](auto& lhs, auto& rhs) { using std::swap; swap(lhs, rhs); }, _seq, other._seq);
     }
+
+    constexpr std::tuple<Sequences...> extract() && {
+        return std::move(_seq);
+    }
+
+    constexpr void replace(std::tuple<Sequences...>&& seq) {
+        // Calculate the cap and cup of the bit pattern representing the size of each sequence.
+        if (detail::tuple_reduction([](auto&... c) { return (c.size() & ...); }, seq) != detail::tuple_reduction([](auto&... c) { return (c.size() | ...); }, seq)) {
+            throw std::invalid_argument("not equal length");
+        }
+        _seq = std::move(seq);
+    }
 };
 
 template <typename... Sequences>
