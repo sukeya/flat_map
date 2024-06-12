@@ -509,19 +509,16 @@ public:
 
     constexpr iterator insert(const_iterator pos, value_type const& value)
     {
-        // FIXME: exception neutral impl
         return detail::tuple_transform([](auto& c, auto pos, auto& value) { return c.insert(pos, value); }, _seq, pos._it, value);
     }
 
     constexpr iterator insert(const_iterator pos, value_type&& value)
     {
-        // FIXME: exception neutral impl
         return detail::tuple_transform([](auto& c, auto pos, auto&& value) { return c.insert(pos, std::move(value)); }, _seq, pos._it, std::move(value));
     }
 
     constexpr iterator insert(const_iterator pos, size_type count, value_type const& value)
     {
-        // FIXME: exception neutral impl
         return detail::tuple_transform([count](auto& c, auto pos, auto& value) { return c.insert(pos, count, value); }, _seq, pos._it, value);
     }
 
@@ -536,7 +533,6 @@ private:
     template <typename ForwardIterator, std::size_t... N>
     constexpr iterator _insert(const_iterator pos, ForwardIterator first, ForwardIterator last, std::index_sequence<N...>, std::forward_iterator_tag)
     {
-        // FIXME: exception neutral impl
         return detail::tuple_transform(
             [](auto& c, auto pos, auto first, auto last) { return c.insert(pos, first, last); },
             _seq,
@@ -573,7 +569,6 @@ public:
     template <typename... Args>
     constexpr iterator emplace(const_iterator pos, std::piecewise_construct_t, Args&&... args)
     {
-        // FIXME: exception neutral impl
         auto inserter = [this](auto& c, auto pos, auto&& args)
         {
             using indices_t = std::make_index_sequence<std::tuple_size_v<detail::remove_cvref_t<decltype(args)>>>;

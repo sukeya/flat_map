@@ -340,19 +340,11 @@ constexpr iterator insert(const_iterator pos, value_type&& value);
 
 Insert a `value`.
 
-**Exceptions Safety**
-
-Those functions doesn't guarantee exception neutrality.
-
 ```cpp
 constexpr iterator insert(const_iterator pos, size_type count, value_type const& value);
 ```
 
 Insert `count` copies of `value`.
-
-**Exceptions Safety**
-
-This function doesn't guarantee exception neutrality.
 
 ```cpp
 template <typename InputIterator>
@@ -361,19 +353,11 @@ constexpr iterator insert(const_iterator pos, InputIterator first, InputIterator
 
 Insert values from `[first, last)`.
 
-**Exceptions Safety**
-
-This functions doesn't guarantee exception neutrality.
-
 ```cpp
 constexpr iterator insert(const_iterator pos, std::initializer_list<value_type> ilist);
 ```
 
 Insert values from ilist.
-
-**Exceptions Safety**
-
-This functions doesn't guarantee exception neutrality.
 
 ### emplace
 
@@ -384,20 +368,12 @@ constexpr iterator emplace(const_iterator pos, Args&&... args);
 
 Equivalent to `insert(pos, value_type(std::forward<Args>(args)...))`.
 
-**Exceptions Safety**
-
-This functions doesn't guarantee exception neutrality.
-
 ```cpp
 template <typename... Args>
 constexpr iterator emplace(const_iterator pos, std::piecewise_construct_t, Args&&... args);
 ```
 
 Insert new elements with piecewise construction.
-
-**Exceptions Safety**
-
-This functions doesn't guarantee exception neutrality.
 
 ### erase
 
@@ -410,20 +386,12 @@ constexpr iterator erase(const_iterator first, const_iterator last);
 
 An iterator that next to erased elements.
 
-**Exceptions Safety**
-
-This functions doesn't guarantee exception neutrality.
-
 ### push\_back
 
 ```cpp
 constexpr void push_back(value_type const& value);
 constexpr void push_back(value_type&& value);
 ```
-
-**Exceptions Safety**
-
-This functions doesn't guarantee exception neutrality.
 
 ### emplace\_back
 
@@ -436,19 +404,11 @@ constexpr reference emplace_back(Args&&... args);
 
 Reference to inserted value.
 
-**Exceptions Safety**
-
-This functions doesn't guarantee exception neutrality.
-
 ### pop\_back
 
 ```cpp
 constexpr void pop_back();
 ```
-
-**Exceptions Safety**
-
-This functions doesn't guarantee exception neutrality.
 
 ### resize
 
@@ -456,10 +416,6 @@ This functions doesn't guarantee exception neutrality.
 constexpr void resize(size_type count);
 constexpr void resize(size_type count, value_type const& value);
 ```
-
-**Exceptions Safety**
-
-This functions doesn't guarantee exception neutrality.
 
 ### swap
 
