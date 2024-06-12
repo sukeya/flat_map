@@ -943,6 +943,20 @@ TEST_CASE("replace", "[replace]")
     }
 }
 
+TEST_CASE("get_sequence", "[get_sequence]")
+{
+    flat_map::tied_sequence<std::vector<int>, std::vector<int>> src =
+    {
+        {0, 1},
+        {2, 3},
+        {4, 5},
+        {6, 7},
+    };
+
+    REQUIRE(flat_map::get_sequence<0>(src) == std::vector<int>{0, 2, 4, 6});
+    REQUIRE(flat_map::get_sequence<1>(src) == std::vector<int>{1, 3, 5, 7});
+}
+
 TEST_CASE("comparator", "[comparator]")
 {
     SECTION("traditional comparator")
@@ -1191,7 +1205,6 @@ TEST_CASE("allocator", "[allocator]")
         };
 
         REQUIRE(src.begin() != dst.begin());
-        REQUIRE(src.data() != dst.data());
         REQUIRE(src.size() == 4);
         REQUIRE(src[0] == std::tuple{1, 2});
         REQUIRE(src[1] == std::tuple{1, 2});

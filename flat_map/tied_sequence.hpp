@@ -600,7 +600,14 @@ public:
         }
         _seq = std::move(seq);
     }
+
+    template <std::size_t N>
+    constexpr const auto& get_sequence() const noexcept { return std::get<N>(_seq); }
 };
+
+
+template <std::size_t N,typename... Sequences>
+constexpr const auto& get_sequence(const tied_sequence<Sequences...>& tied_seq) noexcept { return tied_seq.template get_sequence<N>(); }
 
 template <typename... Sequences>
 constexpr bool operator==(tied_sequence<Sequences...> const& lhs, tied_sequence<Sequences...> const& rhs)

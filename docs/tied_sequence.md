@@ -404,6 +404,7 @@ constexpr std::tuple<Sequences...> extract() &&;
 Extract the internal container of `*this`.
 
 **Return value**
+
 The internal container of `*this`.
 
 ### replace
@@ -415,6 +416,7 @@ constexpr void replace(std::tuple<Sequences...>&& seq);
 Replace the internal container of `*this` with `seq`.
 
 **Exceptions**
+
 No exception only if all sequences have the same length.
 
 ## Non member functions
@@ -545,3 +547,15 @@ template <typename... Allocators>
 ```
 
 Forward allocators as `tied_sequence::allocator_type`.
+
+### get_sequence
+```cpp
+template <std::size_t N>
+constexpr const auto& get_sequence() const noexcept;
+```
+
+Return the `N` th sequence of `*this`.
+
+**Return value**
+
+the `N` th sequence of `*this`.
