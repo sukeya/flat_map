@@ -222,15 +222,6 @@ constexpr const_reference back() const { return *std::prev(end()); }
 
 Worse case of `Sequences`.
 
-### data
-
-```cpp
-constexpr pointer data() noexcept;
-constexpr const_pointer data() const noexcept;
-```
-
-Available only if every sequences provide `data()`.
-
 ## Iterators
 
 ### begin
@@ -302,26 +293,6 @@ constexpr size_t size() const noexcept;
 ```cpp
 constexpr size_t max_size() const noexcept;
 ```
-
-<!--
-### reserve
-
-```cpp
-constexpr void reserve(size_type new_cap);
-```
-
-### capacity
-
-```cpp
-constexpr size_type capacity() const noexcept;
-```
-
-### shrink_to_fit
-
-```cpp
-constexpr void shrink_to_fit() noexcept;
-```
--->
 
 ## Modifiers
 
@@ -408,13 +379,6 @@ Reference to inserted value.
 
 ```cpp
 constexpr void pop_back();
-```
-
-### resize
-
-```cpp
-constexpr void resize(size_type count);
-constexpr void resize(size_type count, value_type const& value);
 ```
 
 ### swap

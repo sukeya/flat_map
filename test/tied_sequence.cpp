@@ -384,7 +384,6 @@ TEST_CASE("construction", "[construction]")
         auto dst = src;
 
         REQUIRE(src.begin() != dst.begin());
-        REQUIRE(src.data() != dst.data());
         REQUIRE(src.size() == 4);
         REQUIRE(src[0] == std::tuple{1, 2});
         REQUIRE(src[1] == std::tuple{1, 2});
@@ -580,20 +579,6 @@ TEST_CASE("accessor", "[accessor]")
         REQUIRE(ts.front() == std::tuple{0, 1});
         REQUIRE(ts.back() == std::tuple{6, 7});
     }
-
-    SECTION("data")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
-            {0, 1},
-            {2, 3},
-            {4, 5},
-            {6, 7},
-        };
-
-        REQUIRE(std::get<0>(ts.data()) != nullptr);
-        REQUIRE(std::get<1>(ts.data()) != nullptr);
-    }
 }
 
 TEST_CASE("iterator", "[iterator]")
@@ -649,32 +634,6 @@ TEST_CASE("capacity", "[capacity]")
         REQUIRE(ts.size() == 4);
         REQUIRE(ts.max_size() > 0);
     }
-
-#if 0 // TODO
-    SECTION("reserve/capacity")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts;
-        REQUIRE(ts.capacity() == 0);
-        REQUIRE(ts.size() == 0);
-        ts.reserve(10);
-        REQUIRE(ts.capacity() == 10);
-        REQUIRE(ts.size() == 0);
-    }
-
-    SECTION("shrink_to_fit")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts;
-
-        ts.reserve(10);
-        ts.push_back({0, 1});
-        REQUIRE(ts.capacity() == 10);
-        REQUIRE(ts.size() == 1);
-
-        ts.shrink_to_fit();
-        REQUIRE(ts.capacity() == 1);
-        REQUIRE(ts.size() == 1);
-    }
-#endif
 
     SECTION("clear")
     {
@@ -891,33 +850,6 @@ TEST_CASE("tail erasure", "[erase]")
         REQUIRE(ts[0] == std::tuple{0, 1});
         REQUIRE(ts[1] == std::tuple{2, 3});
         REQUIRE(ts[2] == std::tuple{4, 5});
-    }
-}
-
-TEST_CASE("resize", "[resize]")
-{
-    SECTION("default")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts;
-
-        ts.resize(4);
-        REQUIRE(ts.size() == 4);
-        REQUIRE(ts[0] == std::tuple{0, 0});
-        REQUIRE(ts[1] == std::tuple{0, 0});
-        REQUIRE(ts[2] == std::tuple{0, 0});
-        REQUIRE(ts[3] == std::tuple{0, 0});
-    }
-
-    SECTION("value")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts;
-
-        ts.resize(4, {1, 2});
-        REQUIRE(ts.size() == 4);
-        REQUIRE(ts[0] == std::tuple{1, 2});
-        REQUIRE(ts[1] == std::tuple{1, 2});
-        REQUIRE(ts[2] == std::tuple{1, 2});
-        REQUIRE(ts[3] == std::tuple{1, 2});
     }
 }
 
