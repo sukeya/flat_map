@@ -1,4 +1,4 @@
-# flat\_multimap
+# flat_multimap
 
 ```cpp
 #include <flat_map/flat_multimap.hpp>

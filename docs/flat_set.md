@@ -1,4 +1,4 @@
-# flat\_set
+# flat_set
 
 ```cpp
 #include <flat_map/flat_set.hpp>

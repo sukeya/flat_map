@@ -1,4 +1,4 @@
-# tied\_sequence
+# tied_sequence
 
 ```cpp
 #include <flat_map/tied_sequence.hpp>
@@ -289,7 +289,7 @@ constexpr bool empty() const noexcept;
 constexpr size_t size() const noexcept;
 ```
 
-### max\_size
+### max_size
 ```cpp
 constexpr size_t max_size() const noexcept;
 ```
@@ -357,14 +357,14 @@ constexpr iterator erase(const_iterator first, const_iterator last);
 
 An iterator that next to erased elements.
 
-### push\_back
+### push_back
 
 ```cpp
 constexpr void push_back(value_type const& value);
 constexpr void push_back(value_type&& value);
 ```
 
-### emplace\_back
+### emplace_back
 
 ```cpp
 template <typename... Args>
@@ -375,7 +375,7 @@ constexpr reference emplace_back(Args&&... args);
 
 Reference to inserted value.
 
-### pop\_back
+### pop_back
 
 ```cpp
 constexpr void pop_back();
@@ -528,7 +528,7 @@ constexpr typename tied_sequence<Sequences...>::size_type erase(tied_sequence<Se
 
 Erase every elements which equivalent to `value`.
 
-### erase\_if
+### erase_if
 
 ```cpp
 template <typename... Sequences, typename Pred>
