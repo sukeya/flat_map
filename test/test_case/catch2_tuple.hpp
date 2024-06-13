@@ -7,14 +7,13 @@
 
 #ifdef FLAT_MAP_ZIP_NON_STD_TUPLE
 
-#include <catch2/catch_tostring.hpp>
+#    include <catch2/catch_tostring.hpp>
 
-#include "flat_map/__tuple.hpp"
+#    include "flat_map/__tuple.hpp"
 
-namespace Catch
-{
-    template <typename... T>
-    struct StringMaker<flat_map::detail::tuple<T...>> : StringMaker<std::tuple<T...>> { };
-}
+namespace Catch {
+template <typename... T>
+struct StringMaker<flat_map::detail::tuple<T...>> : StringMaker<std::tuple<T...>> {};
+}  // namespace Catch
 
 #endif

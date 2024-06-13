@@ -8,7 +8,7 @@
 template <typename T>
 using CONTAINER = std::vector<T>;
 
-#define FLAT_MAP 1
+#define FLAT_MAP        1
 #define MULTI_CONTAINER 1
 #include "test_case/basic.ipp"
 #include "test_case/deduction_guide.ipp"

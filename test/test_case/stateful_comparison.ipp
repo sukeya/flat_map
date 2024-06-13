@@ -10,18 +10,15 @@ bool less(int lhs, int rhs) { return lhs < rhs; }
 bool less2(int lhs, int rhs) { return lhs < rhs; }
 bool greater(int lhs, int rhs) { return lhs > rhs; }
 
-TEST_CASE("construction fp", "[construction][fp]")
-{
-    SECTION("iter construction")
-    {
-        std::vector v =
-        {
+TEST_CASE("construction fp", "[construction][fp]") {
+    SECTION("iter construction") {
+        std::vector v = {
             MAKE_PAIR(6, 7),
             MAKE_PAIR(4, 5),
             MAKE_PAIR(2, 3),
             MAKE_PAIR(0, 1),
         };
-        FLAT_CONTAINER<int, int, bool(*)(int, int)> fm{v.begin(), v.end(), less};
+        FLAT_CONTAINER<int, int, bool (*)(int, int)> fm{v.begin(), v.end(), less};
 
         auto itr = fm.begin();
         REQUIRE(*itr++ == MAKE_PAIR(0, 1));
@@ -31,16 +28,14 @@ TEST_CASE("construction fp", "[construction][fp]")
         REQUIRE(itr == fm.end());
     }
 
-    SECTION("init list construction")
-    {
-        FLAT_CONTAINER<int, int, bool(*)(int, int)> fm =
-        {
+    SECTION("init list construction") {
+        FLAT_CONTAINER<int, int, bool (*)(int, int)> fm = {
             {
-                MAKE_PAIR(6, 7),
-                MAKE_PAIR(4, 5),
-                MAKE_PAIR(2, 3),
-                MAKE_PAIR(0, 1),
-            },
+             MAKE_PAIR(6, 7),
+             MAKE_PAIR(4, 5),
+             MAKE_PAIR(2, 3),
+             MAKE_PAIR(0, 1),
+             },
             less,
         };
 
@@ -52,16 +47,14 @@ TEST_CASE("construction fp", "[construction][fp]")
         REQUIRE(itr == fm.end());
     }
 
-    SECTION("copy construction")
-    {
-        FLAT_CONTAINER<int, int, bool(*)(int, int)> fm =
-        {
+    SECTION("copy construction") {
+        FLAT_CONTAINER<int, int, bool (*)(int, int)> fm = {
             {
-                MAKE_PAIR(6, 7),
-                MAKE_PAIR(4, 5),
-                MAKE_PAIR(2, 3),
-                MAKE_PAIR(0, 1),
-            },
+             MAKE_PAIR(6, 7),
+             MAKE_PAIR(4, 5),
+             MAKE_PAIR(2, 3),
+             MAKE_PAIR(0, 1),
+             },
             less,
         };
         auto ptr = to_pointer_tuple(*fm.begin());
@@ -83,16 +76,14 @@ TEST_CASE("construction fp", "[construction][fp]")
         REQUIRE(itr == copy.end());
     }
 
-    SECTION("move construction")
-    {
-        FLAT_CONTAINER<int, int, bool(*)(int, int)> fm =
-        {
+    SECTION("move construction") {
+        FLAT_CONTAINER<int, int, bool (*)(int, int)> fm = {
             {
-                MAKE_PAIR(6, 7),
-                MAKE_PAIR(4, 5),
-                MAKE_PAIR(2, 3),
-                MAKE_PAIR(0, 1),
-            },
+             MAKE_PAIR(6, 7),
+             MAKE_PAIR(4, 5),
+             MAKE_PAIR(2, 3),
+             MAKE_PAIR(0, 1),
+             },
             less,
         };
         auto ptr = to_pointer_tuple(*fm.begin());
@@ -115,27 +106,23 @@ TEST_CASE("construction fp", "[construction][fp]")
     }
 }
 
-TEST_CASE("assignment fp", "[assignment][fp]")
-{
-    SECTION("copy assignment")
-    {
-        FLAT_CONTAINER<int, int, bool(*)(int, int)> fm =
-        {
+TEST_CASE("assignment fp", "[assignment][fp]") {
+    SECTION("copy assignment") {
+        FLAT_CONTAINER<int, int, bool (*)(int, int)> fm = {
             {
-                MAKE_PAIR(6, 7),
-                MAKE_PAIR(4, 5),
-                MAKE_PAIR(2, 3),
-                MAKE_PAIR(0, 1),
-            },
+             MAKE_PAIR(6, 7),
+             MAKE_PAIR(4, 5),
+             MAKE_PAIR(2, 3),
+             MAKE_PAIR(0, 1),
+             },
             less,
         };
         auto ptr = to_pointer_tuple(*fm.begin());
 
-        FLAT_CONTAINER<int, int, bool(*)(int, int)> copy =
-        {
+        FLAT_CONTAINER<int, int, bool (*)(int, int)> copy = {
             {
-                MAKE_PAIR(1, 1),
-            },
+             MAKE_PAIR(1, 1),
+             },
             greater,
         };
         copy = fm;
@@ -155,25 +142,22 @@ TEST_CASE("assignment fp", "[assignment][fp]")
         REQUIRE(itr == copy.end());
     }
 
-    SECTION("move assignment")
-    {
-        FLAT_CONTAINER<int, int, bool(*)(int, int)> fm =
-        {
+    SECTION("move assignment") {
+        FLAT_CONTAINER<int, int, bool (*)(int, int)> fm = {
             {
-                MAKE_PAIR(6, 7),
-                MAKE_PAIR(4, 5),
-                MAKE_PAIR(2, 3),
-                MAKE_PAIR(0, 1),
-            },
+             MAKE_PAIR(6, 7),
+             MAKE_PAIR(4, 5),
+             MAKE_PAIR(2, 3),
+             MAKE_PAIR(0, 1),
+             },
             less,
         };
         auto ptr = to_pointer_tuple(*fm.begin());
 
-        FLAT_CONTAINER<int, int, bool(*)(int, int)> move =
-        {
+        FLAT_CONTAINER<int, int, bool (*)(int, int)> move = {
             {
-                MAKE_PAIR(1, 1),
-            },
+             MAKE_PAIR(1, 1),
+             },
             greater,
         };
         move = std::move(fm);
@@ -194,27 +178,23 @@ TEST_CASE("assignment fp", "[assignment][fp]")
     }
 }
 
-TEST_CASE("swap fp", "[swap][fp]")
-{
-    SECTION("swap comparator")
-    {
-        FLAT_CONTAINER<int, int, bool(*)(int, int)> fm =
-        {
+TEST_CASE("swap fp", "[swap][fp]") {
+    SECTION("swap comparator") {
+        FLAT_CONTAINER<int, int, bool (*)(int, int)> fm = {
             {
-                MAKE_PAIR(0, 1),
-                MAKE_PAIR(2, 3),
-                MAKE_PAIR(4, 5),
-                MAKE_PAIR(6, 7),
-            },
+             MAKE_PAIR(0, 1),
+             MAKE_PAIR(2, 3),
+             MAKE_PAIR(4, 5),
+             MAKE_PAIR(6, 7),
+             },
             less,
         };
 
-        FLAT_CONTAINER<int, int, bool(*)(int, int)> dst =
-        {
+        FLAT_CONTAINER<int, int, bool (*)(int, int)> dst = {
             {
-                MAKE_PAIR(1, 2),
-                MAKE_PAIR(3, 4),
-            },
+             MAKE_PAIR(1, 2),
+             MAKE_PAIR(3, 4),
+             },
             greater,
         };
 
@@ -231,22 +211,15 @@ TEST_CASE("swap fp", "[swap][fp]")
 }
 
 template <typename T>
-struct comp
-{
+struct comp {
     bool less = true;
 
-    bool operator()(T const& lhs, T const& rhs) const
-    {
-        return less ? (lhs < rhs) : (rhs < lhs);
-    }
+    bool operator()(T const& lhs, T const& rhs) const { return less ? (lhs < rhs) : (rhs < lhs); }
 };
 
-TEST_CASE("construction functor", "[construction][functor]")
-{
-    SECTION("iter construction")
-    {
-        std::vector v =
-        {
+TEST_CASE("construction functor", "[construction][functor]") {
+    SECTION("iter construction") {
+        std::vector v = {
             MAKE_PAIR(6, 7),
             MAKE_PAIR(4, 5),
             MAKE_PAIR(2, 3),
@@ -262,17 +235,15 @@ TEST_CASE("construction functor", "[construction][functor]")
         REQUIRE(itr == fm.end());
     }
 
-    SECTION("init list construction")
-    {
-        FLAT_CONTAINER<int, int, comp<int>> fm =
-        {
+    SECTION("init list construction") {
+        FLAT_CONTAINER<int, int, comp<int>> fm = {
             {
-                MAKE_PAIR(6, 7),
-                MAKE_PAIR(4, 5),
-                MAKE_PAIR(2, 3),
-                MAKE_PAIR(0, 1),
-            },
-            comp<int>{true},
+             MAKE_PAIR(6, 7),
+             MAKE_PAIR(4, 5),
+             MAKE_PAIR(2, 3),
+             MAKE_PAIR(0, 1),
+             },
+            comp<int>{       true   },
         };
 
         auto itr = fm.begin();
@@ -283,17 +254,15 @@ TEST_CASE("construction functor", "[construction][functor]")
         REQUIRE(itr == fm.end());
     }
 
-    SECTION("copy construction")
-    {
-        FLAT_CONTAINER<int, int, comp<int>> fm =
-        {
+    SECTION("copy construction") {
+        FLAT_CONTAINER<int, int, comp<int>> fm = {
             {
-                MAKE_PAIR(6, 7),
-                MAKE_PAIR(4, 5),
-                MAKE_PAIR(2, 3),
-                MAKE_PAIR(0, 1),
-            },
-            comp<int>{true},
+             MAKE_PAIR(6, 7),
+             MAKE_PAIR(4, 5),
+             MAKE_PAIR(2, 3),
+             MAKE_PAIR(0, 1),
+             },
+            comp<int>{       true   },
         };
         auto ptr = to_pointer_tuple(*fm.begin());
 
@@ -314,17 +283,15 @@ TEST_CASE("construction functor", "[construction][functor]")
         REQUIRE(itr == copy.end());
     }
 
-    SECTION("move construction")
-    {
-        FLAT_CONTAINER<int, int, comp<int>> fm =
-        {
+    SECTION("move construction") {
+        FLAT_CONTAINER<int, int, comp<int>> fm = {
             {
-                MAKE_PAIR(6, 7),
-                MAKE_PAIR(4, 5),
-                MAKE_PAIR(2, 3),
-                MAKE_PAIR(0, 1),
-            },
-            comp<int>{true},
+             MAKE_PAIR(6, 7),
+             MAKE_PAIR(4, 5),
+             MAKE_PAIR(2, 3),
+             MAKE_PAIR(0, 1),
+             },
+            comp<int>{       true   },
         };
         auto ptr = to_pointer_tuple(*fm.begin());
 
@@ -346,28 +313,24 @@ TEST_CASE("construction functor", "[construction][functor]")
     }
 }
 
-TEST_CASE("assignment functor", "[assignment][functor]")
-{
-    SECTION("copy assignment")
-    {
-        FLAT_CONTAINER<int, int, comp<int>> fm =
-        {
+TEST_CASE("assignment functor", "[assignment][functor]") {
+    SECTION("copy assignment") {
+        FLAT_CONTAINER<int, int, comp<int>> fm = {
             {
-                MAKE_PAIR(6, 7),
-                MAKE_PAIR(4, 5),
-                MAKE_PAIR(2, 3),
-                MAKE_PAIR(0, 1),
-            },
-            comp<int>{true},
+             MAKE_PAIR(6, 7),
+             MAKE_PAIR(4, 5),
+             MAKE_PAIR(2, 3),
+             MAKE_PAIR(0, 1),
+             },
+            comp<int>{       true   },
         };
         auto ptr = to_pointer_tuple(*fm.begin());
 
-        FLAT_CONTAINER<int, int, comp<int>> copy =
-        {
+        FLAT_CONTAINER<int, int, comp<int>> copy = {
             {
-                MAKE_PAIR(1, 1),
-            },
-            comp<int>{false},
+             MAKE_PAIR(1, 1),
+             },
+            comp<int>{      false    },
         };
         copy = fm;
 
@@ -386,26 +349,23 @@ TEST_CASE("assignment functor", "[assignment][functor]")
         REQUIRE(itr == copy.end());
     }
 
-    SECTION("move assignment")
-    {
-        FLAT_CONTAINER<int, int, comp<int>> fm =
-        {
+    SECTION("move assignment") {
+        FLAT_CONTAINER<int, int, comp<int>> fm = {
             {
-                MAKE_PAIR(6, 7),
-                MAKE_PAIR(4, 5),
-                MAKE_PAIR(2, 3),
-                MAKE_PAIR(0, 1),
-            },
-            comp<int>{true},
+             MAKE_PAIR(6, 7),
+             MAKE_PAIR(4, 5),
+             MAKE_PAIR(2, 3),
+             MAKE_PAIR(0, 1),
+             },
+            comp<int>{       true   },
         };
         auto ptr = to_pointer_tuple(*fm.begin());
 
-        FLAT_CONTAINER<int, int, comp<int>> move =
-        {
+        FLAT_CONTAINER<int, int, comp<int>> move = {
             {
-                MAKE_PAIR(1, 1),
-            },
-            comp<int>{false},
+             MAKE_PAIR(1, 1),
+             },
+            comp<int>{      false    },
         };
         move = std::move(fm);
 
@@ -425,28 +385,24 @@ TEST_CASE("assignment functor", "[assignment][functor]")
     }
 }
 
-TEST_CASE("swap functor", "[swap][functor]")
-{
-    SECTION("swap comparator")
-    {
-        FLAT_CONTAINER<int, int, comp<int>> fm =
-        {
+TEST_CASE("swap functor", "[swap][functor]") {
+    SECTION("swap comparator") {
+        FLAT_CONTAINER<int, int, comp<int>> fm = {
             {
-                MAKE_PAIR(0, 1),
-                MAKE_PAIR(2, 3),
-                MAKE_PAIR(4, 5),
-                MAKE_PAIR(6, 7),
-            },
-            comp<int>{true},
+             MAKE_PAIR(0, 1),
+             MAKE_PAIR(2, 3),
+             MAKE_PAIR(4, 5),
+             MAKE_PAIR(6, 7),
+             },
+            comp<int>{       true   },
         };
 
-        FLAT_CONTAINER<int, int, comp<int>> dst =
-        {
+        FLAT_CONTAINER<int, int, comp<int>> dst = {
             {
-                MAKE_PAIR(1, 2),
-                MAKE_PAIR(3, 4),
-            },
-            comp<int>{false},
+             MAKE_PAIR(1, 2),
+             MAKE_PAIR(3, 4),
+             },
+            comp<int>{      false   },
         };
 
         fm.swap(dst);

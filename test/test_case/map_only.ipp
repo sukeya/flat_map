@@ -7,19 +7,16 @@
 
 #include "config.hpp"
 
-struct Value
-{
-    int value = 0xcccccccc;
-    char const* name = "defaulted";
+struct Value {
+    int         value = 0xcccccccc;
+    char const* name  = "defaulted";
 
     Value() = default;
     explicit Value(int value, char const* name) : value{value}, name{name} {}
 };
 
-TEST_CASE("map accessor", "[accessor]")
-{
-    FLAT_CONTAINER<int, int> fm =
-    {
+TEST_CASE("map accessor", "[accessor]") {
+    FLAT_CONTAINER<int, int> fm = {
         MAKE_PAIR(0, 1),
         MAKE_PAIR(2, 3),
         MAKE_PAIR(2, 9),
@@ -27,25 +24,19 @@ TEST_CASE("map accessor", "[accessor]")
         MAKE_PAIR(6, 7),
     };
 
-    SECTION("found on at")
-    {
+    SECTION("found on at") {
         auto& value = fm.at(2);
         REQUIRE(value == 3);
     }
 
-    SECTION("not found on at")
-    {
-        REQUIRE_THROWS_AS(fm.at(3), std::out_of_range);
-    }
+    SECTION("not found on at") { REQUIRE_THROWS_AS(fm.at(3), std::out_of_range); }
 
-    SECTION("found on op[]")
-    {
+    SECTION("found on op[]") {
         auto& value = fm[2];
         REQUIRE(value == 3);
     }
 
-    SECTION("not found on op[]")
-    {
+    SECTION("not found on op[]") {
         auto& value = fm[3];
         REQUIRE(fm.size() == 5);
         REQUIRE(value == int{});
@@ -60,12 +51,9 @@ TEST_CASE("map accessor", "[accessor]")
     }
 }
 
-TEST_CASE("insert or assign", "[insertion]")
-{
-    SECTION("insert or assign")
-    {
-        FLAT_CONTAINER<int, int> fm =
-        {
+TEST_CASE("insert or assign", "[insertion]") {
+    SECTION("insert or assign") {
+        FLAT_CONTAINER<int, int> fm = {
             MAKE_PAIR(0, 1),
             MAKE_PAIR(2, 3),
             MAKE_PAIR(4, 5),
@@ -103,10 +91,8 @@ TEST_CASE("insert or assign", "[insertion]")
         REQUIRE(itr == fm.end());
     }
 
-    SECTION("insert or assign with helpful hint")
-    {
-        FLAT_CONTAINER<int, int> fm =
-        {
+    SECTION("insert or assign with helpful hint") {
+        FLAT_CONTAINER<int, int> fm = {
             MAKE_PAIR(0, 1),
             MAKE_PAIR(2, 3),
             MAKE_PAIR(4, 5),
@@ -114,20 +100,20 @@ TEST_CASE("insert or assign", "[insertion]")
         };
 
         {
-            auto itr = fm.insert_or_assign(fm.end(), 8, 9); // 7
+            auto itr = fm.insert_or_assign(fm.end(), 8, 9);  // 7
             REQUIRE(*itr == MAKE_PAIR(8, 9));
             REQUIRE(std::distance(fm.begin(), itr) == 4);
         }
 
         {
-            auto itr = fm.insert_or_assign(std::next(fm.begin(), 2), 3, 4); // 1
+            auto itr = fm.insert_or_assign(std::next(fm.begin(), 2), 3, 4);  // 1
             REQUIRE(fm.size() == 6);
             REQUIRE(*itr == MAKE_PAIR(3, 4));
             REQUIRE(std::distance(fm.begin(), itr) == 2);
         }
 
         {
-            auto itr = fm.insert_or_assign(std::next(fm.begin(), 1), 2, 5); // 4
+            auto itr = fm.insert_or_assign(std::next(fm.begin(), 1), 2, 5);  // 4
             REQUIRE(*itr == MAKE_PAIR(2, 5));
         }
 
@@ -141,10 +127,8 @@ TEST_CASE("insert or assign", "[insertion]")
         REQUIRE(itr == fm.end());
     }
 
-    SECTION("insert or assign with annoying hint")
-    {
-        FLAT_CONTAINER<int, int> fm =
-        {
+    SECTION("insert or assign with annoying hint") {
+        FLAT_CONTAINER<int, int> fm = {
             MAKE_PAIR(0, 1),
             MAKE_PAIR(2, 3),
             MAKE_PAIR(4, 5),
@@ -152,33 +136,33 @@ TEST_CASE("insert or assign", "[insertion]")
         };
 
         {
-            auto itr = fm.insert_or_assign(std::next(fm.begin()), 5, 6); // 5
+            auto itr = fm.insert_or_assign(std::next(fm.begin()), 5, 6);  // 5
             REQUIRE(*itr == MAKE_PAIR(5, 6));
             REQUIRE(std::distance(fm.begin(), itr) == 3);
         }
 
         {
-            auto itr = fm.insert_or_assign(fm.end(), 3, 4); // 8
+            auto itr = fm.insert_or_assign(fm.end(), 3, 4);  // 8
             REQUIRE(fm.size() == 6);
             REQUIRE(*itr == MAKE_PAIR(3, 4));
             REQUIRE(std::distance(fm.begin(), itr) == 2);
         }
 
         {
-            auto itr = fm.insert_or_assign(std::next(fm.begin(), 3), 1, 2); // 2
+            auto itr = fm.insert_or_assign(std::next(fm.begin(), 3), 1, 2);  // 2
             REQUIRE(fm.size() == 7);
             REQUIRE(*itr == MAKE_PAIR(1, 2));
             REQUIRE(std::distance(fm.begin(), itr) == 1);
         }
 
         {
-            auto itr = fm.insert_or_assign(std::next(fm.begin(), 2), 2, 5); // 3
+            auto itr = fm.insert_or_assign(std::next(fm.begin(), 2), 2, 5);  // 3
             REQUIRE(fm.size() == 7);
             REQUIRE(*itr == MAKE_PAIR(2, 5));
         }
 
         {
-            auto itr = fm.insert_or_assign(std::next(fm.begin()), 6, 9); // 6
+            auto itr = fm.insert_or_assign(std::next(fm.begin()), 6, 9);  // 6
             REQUIRE(fm.size() == 7);
             REQUIRE(*itr == MAKE_PAIR(6, 9));
         }
@@ -195,12 +179,9 @@ TEST_CASE("insert or assign", "[insertion]")
     }
 }
 
-TEST_CASE("map emplace insertion", "[insertion]")
-{
-    SECTION("try emplace")
-    {
-        FLAT_CONTAINER<int, int> fm =
-        {
+TEST_CASE("map emplace insertion", "[insertion]") {
+    SECTION("try emplace") {
+        FLAT_CONTAINER<int, int> fm = {
             MAKE_PAIR(0, 1),
             MAKE_PAIR(2, 3),
             MAKE_PAIR(4, 5),
@@ -238,10 +219,8 @@ TEST_CASE("map emplace insertion", "[insertion]")
         REQUIRE(itr == fm.end());
     }
 
-    SECTION("try emplace with helpful hint")
-    {
-        FLAT_CONTAINER<int, int> fm =
-        {
+    SECTION("try emplace with helpful hint") {
+        FLAT_CONTAINER<int, int> fm = {
             MAKE_PAIR(0, 1),
             MAKE_PAIR(2, 3),
             MAKE_PAIR(4, 5),
@@ -249,20 +228,20 @@ TEST_CASE("map emplace insertion", "[insertion]")
         };
 
         {
-            auto itr = fm.try_emplace(fm.end(), 8, 9); // 7
+            auto itr = fm.try_emplace(fm.end(), 8, 9);  // 7
             REQUIRE(*itr == MAKE_PAIR(8, 9));
             REQUIRE(std::distance(fm.begin(), itr) == 4);
         }
 
         {
-            auto itr = fm.try_emplace(std::next(fm.begin(), 2), 3, 4); // 1
+            auto itr = fm.try_emplace(std::next(fm.begin(), 2), 3, 4);  // 1
             REQUIRE(fm.size() == 6);
             REQUIRE(*itr == MAKE_PAIR(3, 4));
             REQUIRE(std::distance(fm.begin(), itr) == 2);
         }
 
         {
-            auto itr = fm.try_emplace(std::next(fm.begin(), 1), 2, 5); // 4
+            auto itr = fm.try_emplace(std::next(fm.begin(), 1), 2, 5);  // 4
             REQUIRE(*itr == MAKE_PAIR(2, 3));
         }
 
@@ -276,10 +255,8 @@ TEST_CASE("map emplace insertion", "[insertion]")
         REQUIRE(itr == fm.end());
     }
 
-    SECTION("try emplace with annoying hint")
-    {
-        FLAT_CONTAINER<int, int> fm =
-        {
+    SECTION("try emplace with annoying hint") {
+        FLAT_CONTAINER<int, int> fm = {
             MAKE_PAIR(0, 1),
             MAKE_PAIR(2, 3),
             MAKE_PAIR(4, 5),
@@ -287,33 +264,33 @@ TEST_CASE("map emplace insertion", "[insertion]")
         };
 
         {
-            auto itr = fm.try_emplace(std::next(fm.begin()), 5, 6); // 5
+            auto itr = fm.try_emplace(std::next(fm.begin()), 5, 6);  // 5
             REQUIRE(*itr == MAKE_PAIR(5, 6));
             REQUIRE(std::distance(fm.begin(), itr) == 3);
         }
 
         {
-            auto itr = fm.try_emplace(fm.end(), 3, 4); // 8
+            auto itr = fm.try_emplace(fm.end(), 3, 4);  // 8
             REQUIRE(fm.size() == 6);
             REQUIRE(*itr == MAKE_PAIR(3, 4));
             REQUIRE(std::distance(fm.begin(), itr) == 2);
         }
 
         {
-            auto itr = fm.try_emplace(std::next(fm.begin(), 3), 1, 2); // 2
+            auto itr = fm.try_emplace(std::next(fm.begin(), 3), 1, 2);  // 2
             REQUIRE(fm.size() == 7);
             REQUIRE(*itr == MAKE_PAIR(1, 2));
             REQUIRE(std::distance(fm.begin(), itr) == 1);
         }
 
         {
-            auto itr = fm.try_emplace(std::next(fm.begin(), 2), 2, 5); // 3
+            auto itr = fm.try_emplace(std::next(fm.begin(), 2), 2, 5);  // 3
             REQUIRE(fm.size() == 7);
             REQUIRE(*itr == MAKE_PAIR(2, 3));
         }
 
         {
-            auto itr = fm.try_emplace(std::next(fm.begin()), 6, 9); // 6
+            auto itr = fm.try_emplace(std::next(fm.begin()), 6, 9);  // 6
             REQUIRE(fm.size() == 7);
             REQUIRE(*itr == MAKE_PAIR(6, 7));
         }
@@ -329,8 +306,7 @@ TEST_CASE("map emplace insertion", "[insertion]")
         REQUIRE(itr == fm.end());
     }
 
-    SECTION("piecewise insertion")
-    {
+    SECTION("piecewise insertion") {
         FLAT_CONTAINER<int, Value> fm;
 
         fm.try_emplace(3, 0xdeadbeef, "deadbeef");

@@ -3,11 +3,9 @@
 
 #pragma once
 
-namespace flat_map
-{
+namespace flat_map {
 
-enum class range_order
-{
+enum class range_order {
     no_ordered,
     sorted,
     uniqued,
@@ -17,4 +15,4 @@ enum class range_order
 template <range_order order>
 using range_order_t = std::integral_constant<range_order, order>;
 
-} // namespace flat_map
+}  // namespace flat_map

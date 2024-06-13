@@ -13,122 +13,114 @@
 #include "test_case/catch2_tuple.hpp"
 #include "test_case/memory.hpp"
 
-TEST_CASE("zip_iterator", "[iterator]")
-{
-    std::vector<int> vi{1, 2, 3};
+TEST_CASE("zip_iterator", "[iterator]") {
+    std::vector<int>   vi{1, 2, 3};
     std::vector<float> vf{1.1f, 2.2f, 3.3f};
 
-    SECTION("construct")
-    {
+    SECTION("construct") {
         [[maybe_unused]] flat_map::detail::zip_iterator i{std::make_tuple(vi.begin(), vf.begin())};
         static_assert(std::is_same_v<decltype(i)::value_type, flat_map::detail::tuple<int, float>>);
     }
 
-    SECTION("base")
-    {
+    SECTION("base") {
         flat_map::detail::zip_iterator i{std::make_tuple(vi.begin(), vf.begin())};
         REQUIRE(i.base<0>() == vi.begin());
         REQUIRE(i.base<1>() == vf.begin());
     }
 
-    SECTION("comparison")
-    {
+    SECTION("comparison") {
         flat_map::detail::zip_iterator b{std::make_tuple(vi.begin(), vf.begin())};
         flat_map::detail::zip_iterator e{std::make_tuple(vi.end(), vf.end())};
 
-        REQUIRE      (b == b);
+        REQUIRE(b == b);
         REQUIRE_FALSE(b == e);
 
         REQUIRE_FALSE(b != b);
-        REQUIRE      (b != e);
+        REQUIRE(b != e);
 
-        REQUIRE_FALSE(b <  b);
-        REQUIRE      (b <  e);
+        REQUIRE_FALSE(b < b);
+        REQUIRE(b < e);
 
-        REQUIRE      (b <= b);
-        REQUIRE      (b <= e);
+        REQUIRE(b <= b);
+        REQUIRE(b <= e);
 
-        REQUIRE_FALSE(b >  b);
-        REQUIRE_FALSE(b >  e);
+        REQUIRE_FALSE(b > b);
+        REQUIRE_FALSE(b > e);
 
-        REQUIRE      (b >= b);
+        REQUIRE(b >= b);
         REQUIRE_FALSE(b >= e);
     }
 
-    SECTION("left const comparison")
-    {
+    SECTION("left const comparison") {
         flat_map::detail::zip_iterator b{std::make_tuple(vi.begin(), vf.begin())};
         flat_map::detail::zip_iterator e{std::make_tuple(vi.cend(), vf.cend())};
 
-        REQUIRE      (b == b);
+        REQUIRE(b == b);
         REQUIRE_FALSE(b == e);
 
         REQUIRE_FALSE(b != b);
-        REQUIRE      (b != e);
+        REQUIRE(b != e);
 
-        REQUIRE_FALSE(b <  b);
-        REQUIRE      (b <  e);
+        REQUIRE_FALSE(b < b);
+        REQUIRE(b < e);
 
-        REQUIRE      (b <= b);
-        REQUIRE      (b <= e);
+        REQUIRE(b <= b);
+        REQUIRE(b <= e);
 
-        REQUIRE_FALSE(b >  b);
-        REQUIRE_FALSE(b >  e);
+        REQUIRE_FALSE(b > b);
+        REQUIRE_FALSE(b > e);
 
-        REQUIRE      (b >= b);
+        REQUIRE(b >= b);
         REQUIRE_FALSE(b >= e);
     }
 
-    SECTION("right const comparison")
-    {
+    SECTION("right const comparison") {
         flat_map::detail::zip_iterator b{std::make_tuple(vi.cbegin(), vf.cbegin())};
         flat_map::detail::zip_iterator e{std::make_tuple(vi.end(), vf.end())};
 
-        REQUIRE      (b == b);
+        REQUIRE(b == b);
         REQUIRE_FALSE(b == e);
 
         REQUIRE_FALSE(b != b);
-        REQUIRE      (b != e);
+        REQUIRE(b != e);
 
-        REQUIRE_FALSE(b <  b);
-        REQUIRE      (b <  e);
+        REQUIRE_FALSE(b < b);
+        REQUIRE(b < e);
 
-        REQUIRE      (b <= b);
-        REQUIRE      (b <= e);
+        REQUIRE(b <= b);
+        REQUIRE(b <= e);
 
-        REQUIRE_FALSE(b >  b);
-        REQUIRE_FALSE(b >  e);
+        REQUIRE_FALSE(b > b);
+        REQUIRE_FALSE(b > e);
 
-        REQUIRE      (b >= b);
+        REQUIRE(b >= b);
         REQUIRE_FALSE(b >= e);
     }
 
-    SECTION("const comparison")
-    {
+    SECTION("const comparison") {
         flat_map::detail::zip_iterator b{std::make_tuple(vi.cbegin(), vf.cbegin())};
         flat_map::detail::zip_iterator e{std::make_tuple(vi.cend(), vf.cend())};
 
-        REQUIRE      (b == b);
+        REQUIRE(b == b);
         REQUIRE_FALSE(b == e);
 
         REQUIRE_FALSE(b != b);
-        REQUIRE      (b != e);
+        REQUIRE(b != e);
 
-        REQUIRE_FALSE(b <  b);
-        REQUIRE      (b <  e);
+        REQUIRE_FALSE(b < b);
+        REQUIRE(b < e);
 
-        REQUIRE      (b <= b);
-        REQUIRE      (b <= e);
+        REQUIRE(b <= b);
+        REQUIRE(b <= e);
 
-        REQUIRE_FALSE(b >  b);
-        REQUIRE_FALSE(b >  e);
+        REQUIRE_FALSE(b > b);
+        REQUIRE_FALSE(b > e);
 
-        REQUIRE      (b >= b);
+        REQUIRE(b >= b);
         REQUIRE_FALSE(b >= e);
     }
 
-    SECTION("forward/backward")
-    {
+    SECTION("forward/backward") {
         flat_map::detail::zip_iterator i{std::make_tuple(vi.begin(), vf.begin())};
         flat_map::detail::zip_iterator n{std::make_tuple(vi.begin() + 1, vf.begin() + 1)};
 
@@ -145,13 +137,13 @@ TEST_CASE("zip_iterator", "[iterator]")
         REQUIRE((i -= 1) == (n - 1));
     }
 
-    SECTION("dereference")
-    {
+    SECTION("dereference") {
         flat_map::detail::zip_iterator b{std::make_tuple(vi.begin(), vf.begin())};
-        static_assert(std::is_same_v<decltype(b)::reference, flat_map::detail::tuple<int&, float&>>);
+        static_assert(std::
+                          is_same_v<decltype(b)::reference, flat_map::detail::tuple<int&, float&>>);
 
         decltype(b)::reference r = *b;
-        auto& [i, f] = r;
+        auto& [i, f]             = r;
 
         REQUIRE(i == 1);
         REQUIRE(f == 1.1f);
@@ -160,8 +152,7 @@ TEST_CASE("zip_iterator", "[iterator]")
         REQUIRE(&f == &vf[0]);
     }
 
-    SECTION("swap")
-    {
+    SECTION("swap") {
         flat_map::detail::zip_iterator b{std::make_tuple(vi.cbegin(), vf.cbegin())};
         flat_map::detail::zip_iterator e{std::make_tuple(vi.cend(), vf.cend())};
 
@@ -173,10 +164,9 @@ TEST_CASE("zip_iterator", "[iterator]")
         REQUIRE(e.base<1>() == vf.cbegin());
     }
 
-    SECTION("iter_swap")
-    {
-        auto vvi = vi;
-        auto vvf = vf;
+    SECTION("iter_swap") {
+        auto                           vvi = vi;
+        auto                           vvf = vf;
         flat_map::detail::zip_iterator b{std::make_tuple(vvi.begin(), vvf.begin())};
         flat_map::detail::zip_iterator n{std::make_tuple(vvi.begin() + 1, vvf.begin() + 1)};
 
@@ -193,10 +183,9 @@ TEST_CASE("zip_iterator", "[iterator]")
         REQUIRE(*n.base<1>() == 1.1f);
     }
 
-    SECTION("value swap")
-    {
-        auto vvi = vi;
-        auto vvf = vf;
+    SECTION("value swap") {
+        auto                           vvi = vi;
+        auto                           vvf = vf;
         flat_map::detail::zip_iterator b{std::make_tuple(vvi.begin(), vvf.begin())};
         flat_map::detail::zip_iterator n{std::make_tuple(vvi.begin() + 1, vvf.begin() + 1)};
 
@@ -214,49 +203,45 @@ TEST_CASE("zip_iterator", "[iterator]")
     }
 }
 
-TEST_CASE("unzip_iterator", "[iterator]")
-{
-    std::vector<int> vi{1, 2, 3};
+TEST_CASE("unzip_iterator", "[iterator]") {
+    std::vector<int>   vi{1, 2, 3};
     std::vector<float> vf{1.1f, 2.2f, 3.3f};
 
     flat_map::detail::zip_iterator b{std::make_tuple(vi.begin(), vf.begin())};
     flat_map::detail::zip_iterator n{std::make_tuple(vi.begin() + 1, vf.begin() + 1)};
 
-    SECTION("construct")
-    {
-        [[maybe_unused]] auto ex0 = flat_map::detail::unzip<0>(b);
-        [[maybe_unused]] auto ex1 = flat_map::detail::unzip<1>(b);
+    SECTION("construct") {
+        [[maybe_unused]] auto          ex0 = flat_map::detail::unzip<0>(b);
+        [[maybe_unused]] auto          ex1 = flat_map::detail::unzip<1>(b);
         [[maybe_unused]] decltype(ex0) d;
         static_assert(std::is_same_v<decltype(ex0)::value_type, int>);
         static_assert(std::is_same_v<decltype(ex1)::value_type, float>);
     }
 
-    SECTION("comparison")
-    {
+    SECTION("comparison") {
         auto b0 = flat_map::detail::unzip<0>(b);
         auto n0 = flat_map::detail::unzip<0>(n);
 
-        REQUIRE      (b0 == b0);
+        REQUIRE(b0 == b0);
         REQUIRE_FALSE(b0 == n0);
 
         REQUIRE_FALSE(b0 != b0);
-        REQUIRE      (b0 != n0);
+        REQUIRE(b0 != n0);
 
-        REQUIRE_FALSE(b0 <  b0);
-        REQUIRE      (b0 <  n0);
+        REQUIRE_FALSE(b0 < b0);
+        REQUIRE(b0 < n0);
 
-        REQUIRE      (b0 <= b0);
-        REQUIRE      (b0 <= n0);
+        REQUIRE(b0 <= b0);
+        REQUIRE(b0 <= n0);
 
-        REQUIRE_FALSE(b0 >  b0);
-        REQUIRE_FALSE(b0 >  n0);
+        REQUIRE_FALSE(b0 > b0);
+        REQUIRE_FALSE(b0 > n0);
 
-        REQUIRE      (b0 >= b0);
+        REQUIRE(b0 >= b0);
         REQUIRE_FALSE(b0 >= n0);
     }
 
-    SECTION("forward/backward")
-    {
+    SECTION("forward/backward") {
         auto b0 = flat_map::detail::unzip<0>(b);
         auto n0 = flat_map::detail::unzip<0>(n);
 
@@ -273,8 +258,7 @@ TEST_CASE("unzip_iterator", "[iterator]")
         REQUIRE((b0 -= 1) == (n0 - 1));
     }
 
-    SECTION("dereference")
-    {
+    SECTION("dereference") {
         auto b0 = flat_map::detail::unzip<0>(b);
         auto b1 = flat_map::detail::unzip<1>(b);
         static_assert(std::is_same_v<decltype(b0)::reference, int&>);
@@ -290,19 +274,19 @@ TEST_CASE("unzip_iterator", "[iterator]")
         REQUIRE(&f1 == &vf[0]);
     }
 
-    SECTION("dereference std::map with move")
-    {
-        std::map<int, float> m{{1, 1.1f}};
-        auto b0 = flat_map::detail::unzip<0>(std::make_move_iterator(m.begin()));
-        auto b1 = flat_map::detail::unzip<1>(std::make_move_iterator(m.begin()));
-        const int&& i = *b0;
-        float&& f = *b1;
+    SECTION("dereference std::map with move") {
+        std::map<int, float> m{
+            {1, 1.1f}
+        };
+        auto        b0 = flat_map::detail::unzip<0>(std::make_move_iterator(m.begin()));
+        auto        b1 = flat_map::detail::unzip<1>(std::make_move_iterator(m.begin()));
+        const int&& i  = *b0;
+        float&&     f  = *b1;
         REQUIRE(i == 1);
         REQUIRE(f == 1.1f);
     }
 
-    SECTION("swap")
-    {
+    SECTION("swap") {
         auto l0 = flat_map::detail::unzip<0>(b);
         auto r0 = flat_map::detail::unzip<0>(n);
 
@@ -312,16 +296,15 @@ TEST_CASE("unzip_iterator", "[iterator]")
         REQUIRE(&*r0 == vi.data());
     }
 
-    SECTION("value swap")
-    {
+    SECTION("value swap") {
         using std::swap;
 
-        auto vvi = vi;
-        auto vvf = vf;
+        auto                           vvi = vi;
+        auto                           vvf = vf;
         flat_map::detail::zip_iterator b{std::make_tuple(vvi.begin(), vvf.begin())};
         flat_map::detail::zip_iterator n{std::make_tuple(vvi.begin() + 1, vvf.begin() + 1)};
-        auto b0 = flat_map::detail::unzip<0>(b);
-        auto n0 = flat_map::detail::unzip<0>(n);
+        auto                           b0 = flat_map::detail::unzip<0>(b);
+        auto                           n0 = flat_map::detail::unzip<0>(n);
 
         swap(*b0, *n0);
 
@@ -333,15 +316,12 @@ TEST_CASE("unzip_iterator", "[iterator]")
     }
 }
 
-TEST_CASE("construction", "[construction]")
-{
-    SECTION("default construction")
-    {
+TEST_CASE("construction", "[construction]") {
+    SECTION("default construction") {
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts;
     }
 
-    SECTION("count copies")
-    {
+    SECTION("count copies") {
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts(4, {1, 2});
         REQUIRE(ts.size() == 4);
         REQUIRE(ts[0] == std::tuple{1, 2});
@@ -350,8 +330,7 @@ TEST_CASE("construction", "[construction]")
         REQUIRE(ts[3] == std::tuple{1, 2});
     }
 
-    SECTION("count default-initialized")
-    {
+    SECTION("count default-initialized") {
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts(4);
         REQUIRE(ts.size() == 4);
         REQUIRE(ts[0] == std::tuple<int, int>{});
@@ -360,10 +339,8 @@ TEST_CASE("construction", "[construction]")
         REQUIRE(ts[3] == std::tuple<int, int>{});
     }
 
-    SECTION("from sequence")
-    {
-        std::vector v =
-        {
+    SECTION("from sequence") {
+        std::vector v = {
             std::tuple{0, 1},
             std::tuple{2, 3},
             std::tuple{4, 5},
@@ -378,10 +355,9 @@ TEST_CASE("construction", "[construction]")
         REQUIRE(ts[3] == std::tuple{6, 7});
     }
 
-    SECTION("copy ctor")
-    {
+    SECTION("copy ctor") {
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> src(4, {1, 2});
-        auto dst = src;
+        auto                                                        dst = src;
 
         REQUIRE(src.begin() != dst.begin());
         REQUIRE(src.size() == 4);
@@ -396,10 +372,9 @@ TEST_CASE("construction", "[construction]")
         REQUIRE(dst[3] == std::tuple{1, 2});
     }
 
-    SECTION("move ctor")
-    {
+    SECTION("move ctor") {
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> src(4, {1, 2});
-        auto dst = std::move(src);
+        auto                                                        dst = std::move(src);
 
         REQUIRE(src.begin() != dst.begin());
         REQUIRE(src.empty());
@@ -410,10 +385,8 @@ TEST_CASE("construction", "[construction]")
         REQUIRE(dst[3] == std::tuple{1, 2});
     }
 
-    SECTION("initializer_list")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+    SECTION("initializer_list") {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {2, 3},
             {4, 5},
@@ -428,10 +401,8 @@ TEST_CASE("construction", "[construction]")
     }
 }
 
-TEST_CASE("assignment", "[assignment]")
-{
-    SECTION("copy assignment")
-    {
+TEST_CASE("assignment", "[assignment]") {
+    SECTION("copy assignment") {
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> src(4, {1, 2}), dst;
         dst = src;
 
@@ -448,8 +419,7 @@ TEST_CASE("assignment", "[assignment]")
         REQUIRE(dst[3] == std::tuple{1, 2});
     }
 
-    SECTION("move assignment")
-    {
+    SECTION("move assignment") {
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> src(4, {1, 2}), dst;
         dst = std::move(src);
 
@@ -462,11 +432,9 @@ TEST_CASE("assignment", "[assignment]")
         REQUIRE(dst[3] == std::tuple{1, 2});
     }
 
-    SECTION("initializer_list")
-    {
+    SECTION("initializer_list") {
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts;
-        ts =
-        {
+        ts = {
             {0, 1},
             {2, 3},
             {4, 5},
@@ -480,8 +448,7 @@ TEST_CASE("assignment", "[assignment]")
         REQUIRE(ts[3] == std::tuple{6, 7});
     }
 
-    SECTION("count copies")
-    {
+    SECTION("count copies") {
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts;
         ts.assign(4, {1, 2});
 
@@ -492,10 +459,8 @@ TEST_CASE("assignment", "[assignment]")
         REQUIRE(ts[3] == std::tuple{1, 2});
     }
 
-    SECTION("from sequence")
-    {
-        std::vector v =
-        {
+    SECTION("from sequence") {
+        std::vector v = {
             std::tuple{0, 1},
             std::tuple{2, 3},
             std::tuple{4, 5},
@@ -512,11 +477,9 @@ TEST_CASE("assignment", "[assignment]")
         REQUIRE(ts[3] == std::tuple{6, 7});
     }
 
-    SECTION("assign initializer_list")
-    {
+    SECTION("assign initializer_list") {
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts;
-        ts.assign(
-        {
+        ts.assign({
             {0, 1},
             {2, 3},
             {4, 5},
@@ -531,12 +494,9 @@ TEST_CASE("assignment", "[assignment]")
     }
 }
 
-TEST_CASE("accessor", "[accessor]")
-{
-    SECTION("at")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+TEST_CASE("accessor", "[accessor]") {
+    SECTION("at") {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {2, 3},
             {4, 5},
@@ -550,10 +510,8 @@ TEST_CASE("accessor", "[accessor]")
         REQUIRE_THROWS_AS(ts.at(4), std::out_of_range);
     }
 
-    SECTION("operator[]")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+    SECTION("operator[]") {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {2, 3},
             {4, 5},
@@ -566,10 +524,8 @@ TEST_CASE("accessor", "[accessor]")
         REQUIRE(ts[3] == std::tuple{6, 7});
     }
 
-    SECTION("front back")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+    SECTION("front back") {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {2, 3},
             {4, 5},
@@ -581,19 +537,15 @@ TEST_CASE("accessor", "[accessor]")
     }
 }
 
-TEST_CASE("iterator", "[iterator]")
-{
-    SECTION("empty")
-    {
+TEST_CASE("iterator", "[iterator]") {
+    SECTION("empty") {
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts;
         REQUIRE(ts.begin() == ts.end());
         REQUIRE(ts.rbegin() == ts.rend());
     }
 
-    SECTION("non empty")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+    SECTION("non empty") {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {2, 3},
             {4, 5},
@@ -611,20 +563,16 @@ TEST_CASE("iterator", "[iterator]")
     }
 }
 
-TEST_CASE("capacity", "[capacity]")
-{
-    SECTION("empty")
-    {
+TEST_CASE("capacity", "[capacity]") {
+    SECTION("empty") {
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts;
         REQUIRE(ts.empty());
         REQUIRE(ts.size() == 0);
         REQUIRE(ts.max_size() > 0);
     }
 
-    SECTION("non empty")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+    SECTION("non empty") {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {2, 3},
             {4, 5},
@@ -635,10 +583,8 @@ TEST_CASE("capacity", "[capacity]")
         REQUIRE(ts.max_size() > 0);
     }
 
-    SECTION("clear")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+    SECTION("clear") {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {2, 3},
             {4, 5},
@@ -649,19 +595,16 @@ TEST_CASE("capacity", "[capacity]")
     }
 }
 
-TEST_CASE("insertion", "[insertion]")
-{
-    SECTION("single")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+TEST_CASE("insertion", "[insertion]") {
+    SECTION("single") {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {2, 3},
             {4, 5},
             {6, 7},
         };
 
-        auto v = decltype(ts)::value_type{3, 4};
+        auto v   = decltype(ts)::value_type{3, 4};
         auto itr = ts.insert(std::next(ts.begin(), 2), v);
         REQUIRE(itr == std::next(ts.begin(), 2));
 
@@ -677,10 +620,8 @@ TEST_CASE("insertion", "[insertion]")
         REQUIRE(ts[5] == std::tuple{6, 7});
     }
 
-    SECTION("count copies")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+    SECTION("count copies") {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {2, 3},
             {4, 5},
@@ -700,16 +641,13 @@ TEST_CASE("insertion", "[insertion]")
         REQUIRE(ts[6] == std::tuple{6, 7});
     }
 
-    SECTION("from sequence")
-    {
-        std::vector v =
-        {
+    SECTION("from sequence") {
+        std::vector v = {
             std::tuple{2, 3},
             std::tuple{4, 5},
         };
 
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {6, 7},
         };
@@ -723,18 +661,18 @@ TEST_CASE("insertion", "[insertion]")
         REQUIRE(ts[3] == std::tuple{6, 7});
     }
 
-    SECTION("initializer_list")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+    SECTION("initializer_list") {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {6, 7},
         };
-        auto itr = ts.insert(std::next(ts.begin()),
-        {
-            std::tuple{2, 3},
-            std::tuple{4, 5},
-        });
+        auto itr = ts.insert(
+            std::next(ts.begin()),
+            {
+                std::tuple{2, 3},
+                std::tuple{4, 5},
+        }
+        );
         REQUIRE(itr == std::next(ts.begin()));
 
         REQUIRE(ts.size() == 4);
@@ -744,10 +682,8 @@ TEST_CASE("insertion", "[insertion]")
         REQUIRE(ts[3] == std::tuple{6, 7});
     }
 
-    SECTION("emplace")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+    SECTION("emplace") {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {2, 3},
             {4, 5},
@@ -766,12 +702,9 @@ TEST_CASE("insertion", "[insertion]")
     }
 }
 
-TEST_CASE("erase", "[erase]")
-{
-    SECTION("single")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+TEST_CASE("erase", "[erase]") {
+    SECTION("single") {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {2, 3},
             {4, 5},
@@ -787,10 +720,8 @@ TEST_CASE("erase", "[erase]")
         REQUIRE(ts[2] == std::tuple{6, 7});
     }
 
-    SECTION("range")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+    SECTION("range") {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {2, 3},
             {4, 5},
@@ -806,10 +737,8 @@ TEST_CASE("erase", "[erase]")
     }
 }
 
-TEST_CASE("tail insertion", "[insertion]")
-{
-    SECTION("push_back")
-    {
+TEST_CASE("tail insertion", "[insertion]") {
+    SECTION("push_back") {
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts;
 
         auto v = decltype(ts)::value_type{1, 2};
@@ -821,8 +750,7 @@ TEST_CASE("tail insertion", "[insertion]")
         REQUIRE(ts[1] == std::tuple{3, 4});
     }
 
-    SECTION("emplace_back")
-    {
+    SECTION("emplace_back") {
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts;
 
         auto ref = ts.emplace_back(1, 2);
@@ -833,12 +761,9 @@ TEST_CASE("tail insertion", "[insertion]")
     }
 }
 
-TEST_CASE("tail erasure", "[erase]")
-{
-    SECTION("pop_back")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+TEST_CASE("tail erasure", "[erase]") {
+    SECTION("pop_back") {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {2, 3},
             {4, 5},
@@ -853,17 +778,16 @@ TEST_CASE("tail erasure", "[erase]")
     }
 }
 
-TEST_CASE("swap", "[swap]")
-{
-    SECTION("member")
-    {
+TEST_CASE("swap", "[swap]") {
+    SECTION("member") {
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> src =
-        {
-            {0, 1},
-            {2, 3},
-            {4, 5},
-            {6, 7},
-        }, dst;
+                                                                        {
+                                                                            {0, 1},
+                                                                            {2, 3},
+                                                                            {4, 5},
+                                                                            {6, 7},
+        },
+                                                                    dst;
 
         src.swap(dst);
 
@@ -875,15 +799,15 @@ TEST_CASE("swap", "[swap]")
         REQUIRE(dst[3] == std::tuple{6, 7});
     }
 
-    SECTION("free function")
-    {
+    SECTION("free function") {
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> src =
-        {
-            {0, 1},
-            {2, 3},
-            {4, 5},
-            {6, 7},
-        }, dst;
+                                                                        {
+                                                                            {0, 1},
+                                                                            {2, 3},
+                                                                            {4, 5},
+                                                                            {6, 7},
+        },
+                                                                    dst;
 
         swap(src, dst);
 
@@ -896,10 +820,8 @@ TEST_CASE("swap", "[swap]")
     }
 }
 
-TEST_CASE("extract", "[extract]")
-{
-    flat_map::tied_sequence<std::vector<int>, std::vector<int>> src =
-    {
+TEST_CASE("extract", "[extract]") {
+    flat_map::tied_sequence<std::vector<int>, std::vector<int>> src = {
         {0, 1},
         {2, 3},
         {4, 5},
@@ -911,10 +833,8 @@ TEST_CASE("extract", "[extract]")
     REQUIRE(v == std::vector<int>{1, 3, 5, 7});
 }
 
-TEST_CASE("replace", "[replace]")
-{
-    SECTION("valid")
-    {
+TEST_CASE("replace", "[replace]") {
+    SECTION("valid") {
         auto k = std::vector<int>{0, 2, 4, 6};
         auto v = std::vector<int>{1, 3, 5, 7};
 
@@ -928,8 +848,7 @@ TEST_CASE("replace", "[replace]")
         }
     }
 
-    SECTION("invalid")
-    {
+    SECTION("invalid") {
         auto k = std::vector<int>{0, 2, 4, 6, 8};
         auto v = std::vector<int>{1, 3, 5, 7};
         flat_map::tied_sequence<std::vector<int>, std::vector<int>> src;
@@ -943,10 +862,8 @@ TEST_CASE("replace", "[replace]")
     }
 }
 
-TEST_CASE("get_sequence", "[get_sequence]")
-{
-    flat_map::tied_sequence<std::vector<int>, std::vector<int>> src =
-    {
+TEST_CASE("get_sequence", "[get_sequence]") {
+    flat_map::tied_sequence<std::vector<int>, std::vector<int>> src = {
         {0, 1},
         {2, 3},
         {4, 5},
@@ -957,81 +874,77 @@ TEST_CASE("get_sequence", "[get_sequence]")
     REQUIRE(flat_map::get_sequence<1>(src) == std::vector<int>{1, 3, 5, 7});
 }
 
-TEST_CASE("comparator", "[comparator]")
-{
-    SECTION("traditional comparator")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
-            {0, 1},
-            {2, 3},
-            {4, 5},
-            {6, 7},
-        };
+TEST_CASE("comparator", "[comparator]"){SECTION("traditional comparator"
+){flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
+      {0, 1},
+      {2, 3},
+      {4, 5},
+      {6, 7},
+  };
 
-        REQUIRE(ts == decltype(ts){{0, 1}, {2, 3}, {4, 5}, {6, 7}});
-        REQUIRE_FALSE(ts != decltype(ts){{0, 1}, {2, 3}, {4, 5}, {6, 7}});
+REQUIRE(ts == decltype(ts){{0, 1}, {2, 3}, {4, 5}, {6, 7}});
+REQUIRE_FALSE(ts != decltype(ts){{0, 1}, {2, 3}, {4, 5}, {6, 7}});
 
-        REQUIRE_FALSE(ts == decltype(ts){{0, 1}, {2, 4}, {4, 5}, {6, 7}});
-        REQUIRE(ts != decltype(ts){{0, 1}, {2, 4}, {4, 5}, {6, 7}});
+REQUIRE_FALSE(ts == decltype(ts){{0, 1}, {2, 4}, {4, 5}, {6, 7}});
+REQUIRE(ts != decltype(ts){{0, 1}, {2, 4}, {4, 5}, {6, 7}});
 
-        REQUIRE_FALSE(ts == decltype(ts){{0, 1}, {1, 3}, {4, 5}, {6, 7}});
-        REQUIRE(ts != decltype(ts){{0, 1}, {1, 3}, {4, 5}, {6, 7}});
+REQUIRE_FALSE(ts == decltype(ts){{0, 1}, {1, 3}, {4, 5}, {6, 7}});
+REQUIRE(ts != decltype(ts){{0, 1}, {1, 3}, {4, 5}, {6, 7}});
 
-        REQUIRE_FALSE(ts < decltype(ts){{0, 1}, {2, 3}, {4, 5}, {6, 7}});
-        REQUIRE_FALSE(ts > decltype(ts){{0, 1}, {2, 3}, {4, 5}, {6, 7}});
-        REQUIRE(ts <= decltype(ts){{0, 1}, {2, 3}, {4, 5}, {6, 7}});
-        REQUIRE(ts >= decltype(ts){{0, 1}, {2, 3}, {4, 5}, {6, 7}});
+REQUIRE_FALSE(ts < decltype(ts){{0, 1}, {2, 3}, {4, 5}, {6, 7}});
+REQUIRE_FALSE(ts > decltype(ts){{0, 1}, {2, 3}, {4, 5}, {6, 7}});
+REQUIRE(ts <= decltype(ts){{0, 1}, {2, 3}, {4, 5}, {6, 7}});
+REQUIRE(ts >= decltype(ts){{0, 1}, {2, 3}, {4, 5}, {6, 7}});
 
-        REQUIRE(ts < decltype(ts){{0, 1}, {2, 4}, {4, 5}, {6, 7}});
-        REQUIRE_FALSE(ts > decltype(ts){{0, 1}, {2, 4}, {4, 5}, {6, 7}});
-        REQUIRE(ts <= decltype(ts){{0, 1}, {2, 4}, {4, 5}, {6, 7}});
-        REQUIRE_FALSE(ts >= decltype(ts){{0, 1}, {2, 4}, {4, 5}, {6, 7}});
+REQUIRE(ts < decltype(ts){{0, 1}, {2, 4}, {4, 5}, {6, 7}});
+REQUIRE_FALSE(ts > decltype(ts){{0, 1}, {2, 4}, {4, 5}, {6, 7}});
+REQUIRE(ts <= decltype(ts){{0, 1}, {2, 4}, {4, 5}, {6, 7}});
+REQUIRE_FALSE(ts >= decltype(ts){{0, 1}, {2, 4}, {4, 5}, {6, 7}});
 
-        REQUIRE_FALSE(ts < decltype(ts){{0, 1}, {2, 2}, {4, 5}, {6, 7}});
-        REQUIRE(ts > decltype(ts){{0, 1}, {2, 2}, {4, 5}, {6, 7}});
-        REQUIRE_FALSE(ts <= decltype(ts){{0, 1}, {2, 2}, {4, 5}, {6, 7}});
-        REQUIRE(ts >= decltype(ts){{0, 1}, {2, 2}, {4, 5}, {6, 7}});
+REQUIRE_FALSE(ts < decltype(ts){{0, 1}, {2, 2}, {4, 5}, {6, 7}});
+REQUIRE(ts > decltype(ts){{0, 1}, {2, 2}, {4, 5}, {6, 7}});
+REQUIRE_FALSE(ts <= decltype(ts){{0, 1}, {2, 2}, {4, 5}, {6, 7}});
+REQUIRE(ts >= decltype(ts){{0, 1}, {2, 2}, {4, 5}, {6, 7}});
 
-        REQUIRE_FALSE(ts < decltype(ts){{0, 1}, {1, 3}, {4, 5}, {6, 7}});
-        REQUIRE(ts > decltype(ts){{0, 1}, {1, 3}, {4, 5}, {6, 7}});
-        REQUIRE_FALSE(ts <= decltype(ts){{0, 1}, {1, 3}, {4, 5}, {6, 7}});
-        REQUIRE(ts >= decltype(ts){{0, 1}, {1, 3}, {4, 5}, {6, 7}});
+REQUIRE_FALSE(ts < decltype(ts){{0, 1}, {1, 3}, {4, 5}, {6, 7}});
+REQUIRE(ts > decltype(ts){{0, 1}, {1, 3}, {4, 5}, {6, 7}});
+REQUIRE_FALSE(ts <= decltype(ts){{0, 1}, {1, 3}, {4, 5}, {6, 7}});
+REQUIRE(ts >= decltype(ts){{0, 1}, {1, 3}, {4, 5}, {6, 7}});
 
-        REQUIRE(ts < decltype(ts){{0, 1}, {3, 3}, {4, 5}, {6, 7}});
-        REQUIRE_FALSE(ts > decltype(ts){{0, 1}, {3, 3}, {4, 5}, {6, 7}});
-        REQUIRE(ts <= decltype(ts){{0, 1}, {3, 3}, {4, 5}, {6, 7}});
-        REQUIRE_FALSE(ts >= decltype(ts){{0, 1}, {3, 3}, {4, 5}, {6, 7}});
-    }
+REQUIRE(ts < decltype(ts){{0, 1}, {3, 3}, {4, 5}, {6, 7}});
+REQUIRE_FALSE(ts > decltype(ts){{0, 1}, {3, 3}, {4, 5}, {6, 7}});
+REQUIRE(ts <= decltype(ts){{0, 1}, {3, 3}, {4, 5}, {6, 7}});
+REQUIRE_FALSE(ts >= decltype(ts){{0, 1}, {3, 3}, {4, 5}, {6, 7}});
+}
 
 #ifdef FLAT_MAP_HAS_THREE_WAY_COMPARISON
-    SECTION("three way comparison")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
-            {0, 1},
-            {2, 3},
-            {4, 5},
-            {6, 7},
-        };
+SECTION("three way comparison") {
+    flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
+        {0, 1},
+        {2, 3},
+        {4, 5},
+        {6, 7},
+    };
 
-        REQUIRE((ts <=> decltype(ts){{0, 1}, {2, 3}, {4, 5}, {6, 7}}) == std::weak_ordering::equivalent);
+    REQUIRE((ts <=> decltype(ts){{0, 1}, {2, 3}, {4, 5}, {6, 7}}) ==
+          std::weak_ordering::equivalent);
 
-        REQUIRE((ts <=> decltype(ts){{0, 1}, {2, 4}, {4, 5}, {6, 7}}) == std::weak_ordering::less);
-        REQUIRE((ts <=> decltype(ts){{0, 1}, {2, 2}, {4, 5}, {6, 7}}) == std::weak_ordering::greater);
+    REQUIRE((ts <=> decltype(ts){{0, 1}, {2, 4}, {4, 5}, {6, 7}}) ==
+          std::weak_ordering::less);
+    REQUIRE((ts <=> decltype(ts){{0, 1}, {2, 2}, {4, 5}, {6, 7}}) ==
+          std::weak_ordering::greater);
 
-        REQUIRE((ts <=> decltype(ts){{0, 1}, {3, 3}, {4, 5}, {6, 7}}) == std::weak_ordering::less);
-        REQUIRE((ts <=> decltype(ts){{0, 1}, {1, 3}, {4, 5}, {6, 7}}) == std::weak_ordering::greater);
-    }
+    REQUIRE((ts <=> decltype(ts){{0, 1}, {3, 3}, {4, 5}, {6, 7}}) ==
+          std::weak_ordering::less);
+    REQUIRE((ts <=> decltype(ts){{0, 1}, {1, 3}, {4, 5}, {6, 7}}) ==
+          std::weak_ordering::greater);
+}
 #endif
 }
 
-TEST_CASE("remove erase", "[erase]")
-{
-    SECTION("erase")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+TEST_CASE("remove erase", "[erase]") {
+    SECTION("erase") {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {2, 3},
             {4, 5},
@@ -1050,10 +963,8 @@ TEST_CASE("remove erase", "[erase]")
         REQUIRE(ts[2] == std::tuple{6, 7});
     }
 
-    SECTION("erase")
-    {
-        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts =
-        {
+    SECTION("erase") {
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts = {
             {0, 1},
             {2, 3},
             {4, 5},
@@ -1073,53 +984,49 @@ TEST_CASE("remove erase", "[erase]")
     }
 }
 
-TEST_CASE("non contiguous", "[contiguous]")
-{
-    SECTION("construct")
-    {
+TEST_CASE("non contiguous", "[contiguous]") {
+    SECTION("construct") {
         [[maybe_unused]] flat_map::tied_sequence<std::deque<int>, std::deque<int>> ts;
     }
 }
 
-TEST_CASE("allocator", "[allocator]")
-{
-    SECTION("stateful allocator")
-    {
-        flat_map::tied_sequence<std::vector<int, stateful_allocator<int>>, std::deque<int, stateful_allocator<int>>> ts
-        {
-            stateful_allocator<int>{"state1"},
-            stateful_allocator<int>{"state2"}
-        };
+TEST_CASE("allocator", "[allocator]") {
+    SECTION("stateful allocator") {
+        flat_map::tied_sequence<
+            std::vector<int, stateful_allocator<int>>,
+            std::deque<int, stateful_allocator<int>>>
+            ts{stateful_allocator<int>{"state1"}, stateful_allocator<int>{"state2"}};
 
         auto alloc = ts.get_allocator();
         REQUIRE(alloc.get<0>().state == "state1");
         REQUIRE(alloc.get<1>().state == "state2");
     }
 
-    SECTION("allocator forwarding")
-    {
-        flat_map::tied_sequence<std::vector<int, stateful_allocator<int>>, std::deque<int, stateful_allocator<int>>> ts
-        {
-            flat_map::forward_allocator(
+    SECTION("allocator forwarding") {
+        flat_map::tied_sequence<
+            std::vector<int, stateful_allocator<int>>,
+            std::deque<int, stateful_allocator<int>>>
+            ts{flat_map::forward_allocator(
                 stateful_allocator<int>{"state1"},
                 stateful_allocator<int>{"state2"}
-            )
-        };
+            )};
 
         auto alloc = ts.get_allocator();
         REQUIRE(alloc.get<0>().state == "state1");
         REQUIRE(alloc.get<1>().state == "state2");
     }
 
-    SECTION("allocator forwarding with count copies")
-    {
-        flat_map::tied_sequence<std::vector<int, stateful_allocator<int>>, std::deque<int, stateful_allocator<int>>> ts
-        {
-            4, {1, 2},
-            flat_map::forward_allocator(
-                stateful_allocator<int>{"state1"},
-                stateful_allocator<int>{"state2"}
-            )
+    SECTION("allocator forwarding with count copies") {
+        flat_map::tied_sequence<
+            std::vector<int, stateful_allocator<int>>,
+            std::deque<int, stateful_allocator<int>>>
+            ts{
+                4,
+                {       1, 2},
+                flat_map::forward_allocator(
+                    stateful_allocator<int>{"state1"  },
+                    stateful_allocator<int>{"state2"  }
+                )
         };
 
         REQUIRE(ts.size() == 4);
@@ -1133,16 +1040,15 @@ TEST_CASE("allocator", "[allocator]")
         REQUIRE(alloc.get<1>().state == "state2");
     }
 
-    SECTION("allocator forwarding with count default-initialized")
-    {
-        flat_map::tied_sequence<std::vector<int, stateful_allocator<int>>, std::deque<int, stateful_allocator<int>>> ts
-        {
-            4,
-            flat_map::forward_allocator(
-                stateful_allocator<int>{"state1"},
-                stateful_allocator<int>{"state2"}
-            )
-        };
+    SECTION("allocator forwarding with count default-initialized") {
+        flat_map::tied_sequence<
+            std::vector<int, stateful_allocator<int>>,
+            std::deque<int, stateful_allocator<int>>>
+            ts{4,
+               flat_map::forward_allocator(
+                   stateful_allocator<int>{"state1"},
+                   stateful_allocator<int>{"state2"}
+               )};
 
         REQUIRE(ts.size() == 4);
         REQUIRE(ts[0] == std::tuple<int, int>{});
@@ -1155,24 +1061,23 @@ TEST_CASE("allocator", "[allocator]")
         REQUIRE(alloc.get<1>().state == "state2");
     }
 
-    SECTION("from sequence")
-    {
-        std::vector v =
-        {
+    SECTION("from sequence") {
+        std::vector v = {
             std::tuple{0, 1},
             std::tuple{2, 3},
             std::tuple{4, 5},
             std::tuple{6, 7},
         };
 
-        flat_map::tied_sequence<std::vector<int, stateful_allocator<int>>, std::deque<int, stateful_allocator<int>>> ts
-        {
-            v.begin(), v.end(),
-            flat_map::forward_allocator(
-                stateful_allocator<int>{"state1"},
-                stateful_allocator<int>{"state2"}
-            )
-        };
+        flat_map::tied_sequence<
+            std::vector<int, stateful_allocator<int>>,
+            std::deque<int, stateful_allocator<int>>>
+            ts{v.begin(),
+               v.end(),
+               flat_map::forward_allocator(
+                   stateful_allocator<int>{"state1"},
+                   stateful_allocator<int>{"state2"}
+               )};
 
         REQUIRE(ts.size() == 4);
         REQUIRE(ts[0] == std::tuple{0, 1});
@@ -1185,24 +1090,24 @@ TEST_CASE("allocator", "[allocator]")
         REQUIRE(alloc.get<1>().state == "state2");
     }
 
-    SECTION("copy ctor")
-    {
-        flat_map::tied_sequence<std::vector<int, stateful_allocator<int>>, std::vector<int, stateful_allocator<int>>> src
-        {
-            4, {1, 2},
-            flat_map::forward_allocator(
-                stateful_allocator<int>{"state1"},
-                stateful_allocator<int>{"state2"}
-            )
+    SECTION("copy ctor") {
+        flat_map::tied_sequence<
+            std::vector<int, stateful_allocator<int>>,
+            std::vector<int, stateful_allocator<int>>>
+            src{
+                4,
+                {       1, 2},
+                flat_map::forward_allocator(
+                    stateful_allocator<int>{"state1"  },
+                    stateful_allocator<int>{"state2"  }
+                )
         };
-        decltype(src) dst =
-        {
+        decltype(src) dst = {
             src,
             flat_map::forward_allocator(
                 stateful_allocator<int>{"state3"},
                 stateful_allocator<int>{"state4"}
-            )
-        };
+            )};
 
         REQUIRE(src.begin() != dst.begin());
         REQUIRE(src.size() == 4);
@@ -1225,24 +1130,24 @@ TEST_CASE("allocator", "[allocator]")
         REQUIRE(alloc.get<1>().state == "state4");
     }
 
-    SECTION("move ctor")
-    {
-        flat_map::tied_sequence<std::vector<int, stateful_allocator<int>>, std::vector<int, stateful_allocator<int>>> src
-        {
-            4, {1, 2},
-            flat_map::forward_allocator(
-                stateful_allocator<int>{"state1"},
-                stateful_allocator<int>{"state2"}
-            )
+    SECTION("move ctor") {
+        flat_map::tied_sequence<
+            std::vector<int, stateful_allocator<int>>,
+            std::vector<int, stateful_allocator<int>>>
+            src{
+                4,
+                {       1, 2},
+                flat_map::forward_allocator(
+                    stateful_allocator<int>{"state1"  },
+                    stateful_allocator<int>{"state2"  }
+                )
         };
-        decltype(src) dst =
-        {
+        decltype(src) dst = {
             std::move(src),
             flat_map::forward_allocator(
                 stateful_allocator<int>{"state3"},
                 stateful_allocator<int>{"state4"}
-            )
-        };
+            )};
 
         REQUIRE(src.begin() != dst.begin());
         REQUIRE(src.empty());
@@ -1261,20 +1166,21 @@ TEST_CASE("allocator", "[allocator]")
         REQUIRE(alloc.get<1>().state == "state4");
     }
 
-    SECTION("initializer_list")
-    {
-        flat_map::tied_sequence<std::vector<int, stateful_allocator<int>>, std::deque<int, stateful_allocator<int>>> ts =
-        {
-            {
-                {0, 1},
-                {2, 3},
-                {4, 5},
-                {6, 7},
-            },
-            flat_map::forward_allocator(
-                stateful_allocator<int>{"state1"},
-                stateful_allocator<int>{"state2"}
-            )
+    SECTION("initializer_list") {
+        flat_map::tied_sequence<
+            std::vector<int, stateful_allocator<int>>,
+            std::deque<int, stateful_allocator<int>>>
+            ts = {
+                {
+                 {0, 1},
+                 {2, 3},
+                 {4, 5},
+                 {6, 7},
+                 },
+                flat_map::forward_allocator(
+                    stateful_allocator<int>{"state1" },
+                    stateful_allocator<int>{"state2" }
+                )
         };
 
         REQUIRE(ts.size() == 4);
@@ -1288,20 +1194,17 @@ TEST_CASE("allocator", "[allocator]")
         REQUIRE(alloc.get<1>().state == "state2");
     }
 
-    SECTION("nested")
-    {
-        flat_map::tied_sequence<flat_map::tied_sequence<std::vector<int, stateful_allocator<int>>, std::deque<int, stateful_allocator<int>>>> nts
-        {
-            flat_map::forward_allocator(
-                flat_map::forward_allocator(
-                    stateful_allocator<int>{"state1"},
-                    stateful_allocator<int>{"state2"}
-                )
-            )
-        };
+    SECTION("nested") {
+        flat_map::tied_sequence<flat_map::tied_sequence<
+            std::vector<int, stateful_allocator<int>>,
+            std::deque<int, stateful_allocator<int>>>>
+            nts{flat_map::forward_allocator(flat_map::forward_allocator(
+                stateful_allocator<int>{"state1"},
+                stateful_allocator<int>{"state2"}
+            ))};
 
         auto out = nts.get_allocator();
-        auto in = out.get<0>();
+        auto in  = out.get<0>();
         REQUIRE(in.get<0>().state == "state1");
         REQUIRE(in.get<1>().state == "state2");
     }
