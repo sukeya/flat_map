@@ -18,18 +18,18 @@ jobs:
     - uses: srz-zumix/setup-infer@v1
 
     - name: Install prerequisites
-      run: sudo apt-get install --no-install-recommends cmake ninja-build
+      run: sudo apt-get install --no-install-recommends cmake
 
     - name: Prepare for build
       run: mkdir build
 
     - name: Configure cmake
       working-directory: build
-      run: infer compile -- cmake -DCMAKE_BUILD_TYPE=Debug -DCXX_STANDARD_UPTO=20 -G Ninja ..
+      run: infer compile -- cmake -DCMAKE_BUILD_TYPE=Debug -DCXX_STANDARD_UPTO=20 ..
 
     - name: Run infer
       working-directory: build
-      run: infer run -- ninja unit_test
+      run: infer run -- make unit_test
 
     - name: Report infer
       uses: srz-zumix/reviewdog-action-infer@v1
