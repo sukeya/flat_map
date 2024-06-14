@@ -269,42 +269,6 @@ size_type size() const noexcept;
 size_type max_size() const noexcept;
 ```
 
-### reserve
-
-```cpp
-void reserve(size_type new_cap);
-```
-
-This function is provided only if `Container::reserve()` is provided.
-
-**Postcondition**
-
-- `capacity() == new_cap`
-
-### capacity
-
-```cpp
-size_type capacity() const noexcept;
-```
-
-This function is provided only if `Container::capacity()` is provided.
-
-### shrink_to_fit
-
-```cpp
-void shrink_to_fit();
-```
-
-This function is provided only if `Container::shrink_to_fit()` is provided.
-
-**Postcondition**
-
-- `capacity() == size()`
-
-**Complexity**
-
-`O(N)`.
-
 ## Modifiers
 
 ### clear

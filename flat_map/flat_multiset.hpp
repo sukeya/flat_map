@@ -167,12 +167,9 @@ class flat_multiset
     using _super::rbegin;
     using _super::rend;
 
-    using _super::capacity;
     using _super::clear;
     using _super::empty;
     using _super::max_size;
-    using _super::reserve;
-    using _super::shrink_to_fit;
     using _super::size;
 
     using _super::emplace;

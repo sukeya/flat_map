@@ -155,24 +155,6 @@ class _flat_tree_base : private detail::comparator_store<Compare> {
     [[nodiscard]] bool empty() const noexcept { return _container.empty(); }
     size_type          size() const noexcept { return _container.size(); }
     size_type          max_size() const noexcept { return _container.max_size(); }
-    // extension
-    template <typename... ShouldBeEmpty, typename Dummy = Container>
-    std::enable_if_t<concepts::Reservable<Dummy>> reserve(size_type new_cap) {
-        static_assert(sizeof...(ShouldBeEmpty) == 0);
-        _container.reserve(new_cap);
-    }
-    // extension
-    template <typename... ShouldBeEmpty, typename Dummy = Container>
-    std::enable_if_t<concepts::HasCapacity<Dummy>, size_type> capacity() const noexcept {
-        static_assert(sizeof...(ShouldBeEmpty) == 0);
-        return _container.capacity();
-    }
-    // extension
-    template <typename... ShouldBeEmpty, typename Dummy = Container>
-    std::enable_if_t<concepts::Shrinkable<Dummy>> shrink_to_fit() {
-        static_assert(sizeof...(ShouldBeEmpty) == 0);
-        _container.shrink_to_fit();
-    }
     void clear() noexcept { return _container.clear(); }
 
     template <typename K>
