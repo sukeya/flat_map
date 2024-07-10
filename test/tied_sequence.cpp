@@ -24,8 +24,8 @@ TEST_CASE("zip_iterator", "[iterator]") {
 
     SECTION("base") {
         flat_map::detail::zip_iterator i{std::make_tuple(vi.begin(), vf.begin())};
-        REQUIRE(i.base<0>() == vi.begin());
-        REQUIRE(i.base<1>() == vf.begin());
+        REQUIRE(flat_map::get<0>(i) == vi.begin());
+        REQUIRE(flat_map::get<1>(i) == vf.begin());
     }
 
     SECTION("comparison") {
@@ -158,10 +158,10 @@ TEST_CASE("zip_iterator", "[iterator]") {
 
         swap(b, e);
 
-        REQUIRE(b.base<0>() == vi.cend());
-        REQUIRE(b.base<1>() == vf.cend());
-        REQUIRE(e.base<0>() == vi.cbegin());
-        REQUIRE(e.base<1>() == vf.cbegin());
+        REQUIRE(flat_map::get<0>(b) == vi.cend());
+        REQUIRE(flat_map::get<1>(b) == vf.cend());
+        REQUIRE(flat_map::get<0>(e) == vi.cbegin());
+        REQUIRE(flat_map::get<1>(e) == vf.cbegin());
     }
 
     SECTION("iter_swap") {
@@ -172,15 +172,15 @@ TEST_CASE("zip_iterator", "[iterator]") {
 
         iter_swap(b, n);
 
-        REQUIRE(b.base<0>() == vvi.begin());
-        REQUIRE(b.base<1>() == vvf.begin());
-        REQUIRE(n.base<0>() == (vvi.begin() + 1));
-        REQUIRE(n.base<1>() == (vvf.begin() + 1));
+        REQUIRE(flat_map::get<0>(b) == vvi.begin());
+        REQUIRE(flat_map::get<1>(b) == vvf.begin());
+        REQUIRE(flat_map::get<0>(n) == (vvi.begin() + 1));
+        REQUIRE(flat_map::get<1>(n) == (vvf.begin() + 1));
 
-        REQUIRE(*b.base<0>() == 2);
-        REQUIRE(*b.base<1>() == 2.2f);
-        REQUIRE(*n.base<0>() == 1);
-        REQUIRE(*n.base<1>() == 1.1f);
+        REQUIRE(*(flat_map::get<0>(b)) == 2);
+        REQUIRE(*(flat_map::get<1>(b)) == 2.2f);
+        REQUIRE(*(flat_map::get<0>(n)) == 1);
+        REQUIRE(*(flat_map::get<1>(n)) == 1.1f);
     }
 
     SECTION("value swap") {
@@ -191,15 +191,15 @@ TEST_CASE("zip_iterator", "[iterator]") {
 
         swap(*b, *n);
 
-        REQUIRE(b.base<0>() == vvi.begin());
-        REQUIRE(b.base<1>() == vvf.begin());
-        REQUIRE(n.base<0>() == (vvi.begin() + 1));
-        REQUIRE(n.base<1>() == (vvf.begin() + 1));
+        REQUIRE(flat_map::get<0>(b) == vvi.begin());
+        REQUIRE(flat_map::get<1>(b) == vvf.begin());
+        REQUIRE(flat_map::get<0>(n) == (vvi.begin() + 1));
+        REQUIRE(flat_map::get<1>(n) == (vvf.begin() + 1));
 
-        REQUIRE(*b.base<0>() == 2);
-        REQUIRE(*b.base<1>() == 2.2f);
-        REQUIRE(*n.base<0>() == 1);
-        REQUIRE(*n.base<1>() == 1.1f);
+        REQUIRE(*(flat_map::get<0>(b)) == 2);
+        REQUIRE(*(flat_map::get<1>(b)) == 2.2f);
+        REQUIRE(*(flat_map::get<0>(n)) == 1);
+        REQUIRE(*(flat_map::get<1>(n)) == 1.1f);
     }
 }
 

@@ -551,7 +551,7 @@ Forward allocators as `tied_sequence::allocator_type`.
 ### get_sequence
 ```cpp
 template <std::size_t N>
-constexpr const auto& get_sequence() const noexcept;
+constexpr const auto& get_sequence() noexcept;
 ```
 
 Return the `N` th sequence of `*this`.
@@ -559,3 +559,15 @@ Return the `N` th sequence of `*this`.
 **Return value**
 
 the `N` th sequence of `*this`.
+
+### get
+```cpp
+template <std::size_t N>
+constexpr auto get(/* see below */ it);
+```
+
+Return the iterator of the `N` th sequence.
+The argument `it` must be the (const) iterator of `tied_sequence`.
+
+**Return value**
+the iterator of the `N` th sequence.

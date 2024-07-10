@@ -59,7 +59,7 @@ class zip_iterator {
     zip_iterator& operator=(zip_iterator&&)      = default;
 
     template <std::size_t N>
-    constexpr auto base() const {
+    constexpr auto get() const noexcept {
         return std::get<N>(_it);
     }
 
@@ -146,6 +146,11 @@ class zip_iterator {
         zip_iterator<LIterators...> const& lhs, zip_iterator<RIterators...> const& rhs
     );
 };
+
+template <std::size_t N, typename... Iterators>
+constexpr auto get(const zip_iterator<Iterators...>& zip_it) noexcept {
+    return zip_it.template get<N>();
+}
 
 template <typename... Iterators>
 constexpr auto operator+(
@@ -329,6 +334,10 @@ constexpr bool operator>=(
 }
 
 }  // namespace detail
+
+
+using detail::get;
+
 
 template <typename... Sequences>
 class tied_sequence {
