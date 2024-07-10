@@ -24,8 +24,8 @@ TEST_CASE("zip_iterator", "[iterator]") {
 
     SECTION("base") {
         flat_map::detail::zip_iterator i{std::make_tuple(vi.begin(), vf.begin())};
-        REQUIRE(flat_map::get<0>(i) == vi.begin());
-        REQUIRE(flat_map::get<1>(i) == vf.begin());
+        REQUIRE(flat_map::get_iterator<0>(i) == vi.begin());
+        REQUIRE(flat_map::get_iterator<1>(i) == vf.begin());
     }
 
     SECTION("comparison") {
@@ -158,10 +158,10 @@ TEST_CASE("zip_iterator", "[iterator]") {
 
         swap(b, e);
 
-        REQUIRE(flat_map::get<0>(b) == vi.cend());
-        REQUIRE(flat_map::get<1>(b) == vf.cend());
-        REQUIRE(flat_map::get<0>(e) == vi.cbegin());
-        REQUIRE(flat_map::get<1>(e) == vf.cbegin());
+        REQUIRE(flat_map::get_iterator<0>(b) == vi.cend());
+        REQUIRE(flat_map::get_iterator<1>(b) == vf.cend());
+        REQUIRE(flat_map::get_iterator<0>(e) == vi.cbegin());
+        REQUIRE(flat_map::get_iterator<1>(e) == vf.cbegin());
     }
 
     SECTION("iter_swap") {
@@ -172,15 +172,15 @@ TEST_CASE("zip_iterator", "[iterator]") {
 
         iter_swap(b, n);
 
-        REQUIRE(flat_map::get<0>(b) == vvi.begin());
-        REQUIRE(flat_map::get<1>(b) == vvf.begin());
-        REQUIRE(flat_map::get<0>(n) == (vvi.begin() + 1));
-        REQUIRE(flat_map::get<1>(n) == (vvf.begin() + 1));
+        REQUIRE(flat_map::get_iterator<0>(b) == vvi.begin());
+        REQUIRE(flat_map::get_iterator<1>(b) == vvf.begin());
+        REQUIRE(flat_map::get_iterator<0>(n) == (vvi.begin() + 1));
+        REQUIRE(flat_map::get_iterator<1>(n) == (vvf.begin() + 1));
 
-        REQUIRE(*(flat_map::get<0>(b)) == 2);
-        REQUIRE(*(flat_map::get<1>(b)) == 2.2f);
-        REQUIRE(*(flat_map::get<0>(n)) == 1);
-        REQUIRE(*(flat_map::get<1>(n)) == 1.1f);
+        REQUIRE(*(flat_map::get_iterator<0>(b)) == 2);
+        REQUIRE(*(flat_map::get_iterator<1>(b)) == 2.2f);
+        REQUIRE(*(flat_map::get_iterator<0>(n)) == 1);
+        REQUIRE(*(flat_map::get_iterator<1>(n)) == 1.1f);
     }
 
     SECTION("value swap") {
@@ -191,15 +191,15 @@ TEST_CASE("zip_iterator", "[iterator]") {
 
         swap(*b, *n);
 
-        REQUIRE(flat_map::get<0>(b) == vvi.begin());
-        REQUIRE(flat_map::get<1>(b) == vvf.begin());
-        REQUIRE(flat_map::get<0>(n) == (vvi.begin() + 1));
-        REQUIRE(flat_map::get<1>(n) == (vvf.begin() + 1));
+        REQUIRE(flat_map::get_iterator<0>(b) == vvi.begin());
+        REQUIRE(flat_map::get_iterator<1>(b) == vvf.begin());
+        REQUIRE(flat_map::get_iterator<0>(n) == (vvi.begin() + 1));
+        REQUIRE(flat_map::get_iterator<1>(n) == (vvf.begin() + 1));
 
-        REQUIRE(*(flat_map::get<0>(b)) == 2);
-        REQUIRE(*(flat_map::get<1>(b)) == 2.2f);
-        REQUIRE(*(flat_map::get<0>(n)) == 1);
-        REQUIRE(*(flat_map::get<1>(n)) == 1.1f);
+        REQUIRE(*(flat_map::get_iterator<0>(b)) == 2);
+        REQUIRE(*(flat_map::get_iterator<1>(b)) == 2.2f);
+        REQUIRE(*(flat_map::get_iterator<0>(n)) == 1);
+        REQUIRE(*(flat_map::get_iterator<1>(n)) == 1.1f);
     }
 }
 

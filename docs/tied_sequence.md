@@ -560,10 +560,10 @@ Return the `N` th sequence of `*this`.
 
 the `N` th sequence of `*this`.
 
-### get
+### get_iterator
 ```cpp
 template <std::size_t N>
-constexpr auto get(/* see below */ it);
+constexpr auto get_iterator(/* see below */ it);
 ```
 
 Return the iterator of the `N` th sequence.
