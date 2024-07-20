@@ -399,6 +399,16 @@ TEST_CASE("construction", "[construction]") {
         REQUIRE(ts[2] == std::tuple{4, 5});
         REQUIRE(ts[3] == std::tuple{6, 7});
     }
+
+    SECTION("sequences") {
+        std::vector<int> a = {0, 2};
+        std::vector<int> b = {1, 3};
+        flat_map::tied_sequence<std::vector<int>, std::vector<int>> ts(std::move(a), std::move(b));
+
+        REQUIRE(ts.size() == 2);
+        REQUIRE(ts[0] == std::tuple{0, 1});
+        REQUIRE(ts[1] == std::tuple{2, 3});
+    }
 }
 
 TEST_CASE("assignment", "[assignment]") {

@@ -522,6 +522,11 @@ class tied_sequence {
     )
         : tied_sequence(init.begin(), init.end(), alloc...) {}
 
+    
+    constexpr tied_sequence(Sequences&&... seqs) : tied_sequence() {
+        replace(std::make_tuple(std::forward<Sequences>(seqs)...));
+    }
+
     constexpr tied_sequence& operator=(tied_sequence const& other) = default;
     constexpr tied_sequence& operator=(tied_sequence&& other) noexcept(
         ((std::allocator_traits<

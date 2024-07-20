@@ -117,6 +117,12 @@ constexpr tied_sequence(std::initializer_list<value_type> init, typename Sequenc
 
 Construct from init.
 
+```cpp
+constexpr tied_sequence(Sequences... seqs);
+```
+
+Construct from sequences.
+
 ## Assignments
 
 ```cpp
