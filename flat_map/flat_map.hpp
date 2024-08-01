@@ -20,6 +20,54 @@
 #include "flat_map/enum.hpp"
 
 namespace flat_map {
+namespace detail {
+// Reference of T.
+template <class T>
+struct MappedRef {
+    using type = T&;
+};
+
+// For a tuple, reference of each element of a tuple.
+template <class... Args>
+struct MappedRef<std::tuple<Args...>> {
+    using type = std::tuple<Args&...>;
+};
+
+// Const reference of T.
+template <class T>
+struct MappedConstRef {
+    using type = const T&;
+};
+
+// For a tuple, reference of each element of a tuple.
+template <class... Args>
+struct MappedConstRef<std::tuple<Args...>> {
+    using type = std::tuple<const Args&...>;
+};
+
+// Reference of T.
+template <class T>
+struct ConstCaster {
+    static T& cast(const T& t) {
+        return const_cast<T&>(t);
+    }
+};
+
+// For a tuple, reference of each element of a tuple.
+template <class... Args>
+struct ConstCaster<std::tuple<Args...>> {
+    static std::tuple<Args&...> cast(std::tuple<const Args&...>&& t) {
+        using indices_t = std::make_index_sequence<sizeof...(Args)>;
+        return cast_impl(indices_t{}, std::move(t));
+    }
+
+    template <std::size_t... N>
+    static std::tuple<Args&...> cast_impl(std::index_sequence<N...>, std::tuple<const Args&...>&& t) {
+        return std::make_tuple(
+            std::ref(const_cast<std::tuple_element_t<N, std::tuple<Args&...>>>(std::get<N>(std::move(t))))...);
+    }
+};
+}
 
 template <
     typename Key,
@@ -186,19 +234,21 @@ class flat_map
 
     using _super::get_allocator;
 
-    mapped_type const& at(key_type const& key) const {
+    typename detail::MappedConstRef<mapped_type>::type at(key_type const& key) const {
         if (auto [itr, found] = this->_find(key); found) {
             return std::get<1>(*itr);
         }
         throw std::out_of_range("no such key");
     }
 
-    mapped_type& at(key_type const& key) {
-        return const_cast<mapped_type&>(const_cast<flat_map const*>(this)->at(key));
+    typename detail::MappedRef<mapped_type>::type at(key_type const& key) {
+        return detail::ConstCaster<mapped_type>::cast(const_cast<flat_map const*>(this)->at(key));
     }
 
-    mapped_type& operator[](key_type const& key) { return std::get<1>(*try_emplace(key).first); }
-    mapped_type& operator[](key_type&& key) {
+    typename detail::MappedRef<mapped_type>::type operator[](key_type const& key) {
+        return std::get<1>(*try_emplace(key).first);
+    }
+    typename detail::MappedRef<mapped_type>::type operator[](key_type&& key) {
         return std::get<1>(*try_emplace(std::move(key)).first);
     }
 

@@ -4,11 +4,13 @@
 #pragma once
 
 #include <algorithm>
+#include <functional>
 #include <initializer_list>
 #include <iterator>
 #include <memory>
 #include <stdexcept>
 #include <tuple>
+#include <type_traits>
 #include <utility>
 
 #include "flat_map/__config.hpp"
@@ -64,9 +66,19 @@ class zip_iterator {
     }
 
    private:
+    template <class T>
+    std::reference_wrapper<T> add_ref(T& t) const {
+        return std::ref(t);
+    }
+
+    template <class... Args>
+    tuple<Args&...> add_ref(const tuple<Args&...>& t) const {
+        return t;
+    }
+
     template <std::size_t... N>
     constexpr reference _dereference(std::index_sequence<N...>) const {
-        return std::tie(*std::get<N>(_it)...);
+        return std::make_tuple(add_ref(*std::get<N>(_it))...);
     }
 
    public:
