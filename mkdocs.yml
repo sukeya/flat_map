@@ -1,0 +1,11 @@
+site_name: flat_map
+nav:
+  - Home: introduction.md
+  - Reference:
+    - flat_map:      reference/flat_map.md
+    - flat_multimap: reference/flat_multimap.md
+    - flat_set:      reference/flat_set.md
+    - flat_multiset: reference/flat_multiset.md
+    - tied_sequence: reference/tied_sequence.md
+    - enum:          reference/enum.md
+theme: readthedocs
