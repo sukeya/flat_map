@@ -8,6 +8,7 @@ It compliants C++17/20 standard associative container requirements except comple
 - Fully C++17 conformant compiler and standard library
 
 ## Documentations
+You can read documentations using `MkDocs`.
 
 - [introduction](./docs/introduction.md)
 - references
