@@ -443,6 +443,18 @@ The following conditions must be met:
 
 Otherwise, the behavior is undefined.
 
+### get_container
+
+```cpp
+const Container& extract() const;
+```
+
+Get the const reference of the internal container.
+
+**Return value**
+
+The const reference of the internal container of `*this`.
+
 ### merge
 
 ```cpp

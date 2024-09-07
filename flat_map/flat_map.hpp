@@ -375,6 +375,7 @@ class flat_map
 
     using _super::extract;
     using _super::replace;
+    using _super::get_container;
 
     template <typename Comp, typename Allocator>
     void merge(std::map<key_type, mapped_type, Comp, Allocator>& source) {

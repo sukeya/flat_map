@@ -362,6 +362,8 @@ class _flat_tree_base : private detail::comparator_store<Compare> {
 
     void replace(Container&& cont) { _container = std::move(cont); }
 
+    const Container& get_container() const { return _container; }
+
     // FIXME: Stateful comparator is always treated as non equivalent comparator.
     template <typename Cont>
     static constexpr bool              _same_order_v =

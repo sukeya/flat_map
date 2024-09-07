@@ -184,6 +184,7 @@ class flat_multiset
 
     using _super::extract;
     using _super::replace;
+    using _super::get_container;
 
     template <typename Comp, typename Allocator>
     void merge(std::set<key_type, Comp, Allocator>& source) {

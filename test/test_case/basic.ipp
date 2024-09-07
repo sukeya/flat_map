@@ -1249,6 +1249,19 @@ TEST_CASE("replace", "[replace]") {
     REQUIRE(c == std::move(fm).extract());
 }
 
+TEST_CASE("get_container", "[get_container]") {
+    CONTAINER<PAIR<int, int>> c = {
+        MAKE_PAIR(0, 1),
+        MAKE_PAIR(2, 3),
+        MAKE_PAIR(4, 5),
+        MAKE_PAIR(6, 7),
+    };
+
+    FLAT_CONTAINER<int, int> fm{flat_map::range_order::sorted, c};
+
+    REQUIRE(c == std::move(fm).get_container());
+}
+
 TEST_CASE("erase_if", "[erase_if]") {
     FLAT_CONTAINER<int, int> fm = {
         MAKE_PAIR(0, 1),
